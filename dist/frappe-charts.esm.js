@@ -1,6 +1,7 @@
 function $(expr, con) {
-  return typeof expr === "string" ? (con || document).querySelector(expr)
-                                  : expr || null;
+  return typeof expr === "string"
+    ? (con || document).querySelector(expr)
+    : expr || null;
 }
 
 $.create = (tag, o) => {
@@ -15,10 +16,11 @@ $.create = (tag, o) => {
       var ref = $(val);
       ref.parentNode.insertBefore(element, ref);
       element.appendChild(ref);
-
     } else if (i === "styles") {
       if (typeof val === "object") {
-        Object.keys(val).map(prop => { element.style[prop] = val[prop]; });
+        Object.keys(val).map((prop) => {
+          element.style[prop] = val[prop];
+        });
       }
     } else if (i in element) {
       element[i] = val;
@@ -36,10 +38,12 @@ function getOffset(element) {
     // https://stackoverflow.com/a/7436602/6495043
     // rect.top varies with scroll, so we add whatever has been
     // scrolled to it to get absolute distance from actual page top
-    top : rect.top +
-              (document.documentElement.scrollTop || document.body.scrollTop),
-    left : rect.left +
-               (document.documentElement.scrollLeft || document.body.scrollLeft)
+    top:
+      rect.top +
+      (document.documentElement.scrollTop || document.body.scrollTop),
+    left:
+      rect.left +
+      (document.documentElement.scrollLeft || document.body.scrollLeft),
   };
 }
 
@@ -48,20 +52,21 @@ function isElementInViewport(el) {
   var rect = el.getBoundingClientRect();
 
   return (
-      rect.top >= 0 && rect.left >= 0 &&
-      rect.bottom <=
-          (window.innerHeight ||
-           document.documentElement.clientHeight) && /*or $(window).height() */
-      rect.right <=
-          (window.innerWidth ||
-           document.documentElement.clientWidth) /*or $(window).width() */
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight ||
+        document.documentElement.clientHeight) /*or $(window).height() */ &&
+    rect.right <=
+      (window.innerWidth ||
+        document.documentElement.clientWidth) /*or $(window).width() */
   );
 }
 
 function getElementContentWidth(element) {
   var styles = window.getComputedStyle(element);
   var padding =
-      parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+    parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
 
   return element.clientWidth - padding;
 }
@@ -81,31 +86,38 @@ function fire(target, type, properties) {
 // https://css-tricks.com/snippets/javascript/loop-queryselectorall-matches/
 
 const BASE_MEASURES = {
-  margins : {top : 10, bottom : 10, left : 20, right : 20},
-  paddings : {top : 20, bottom : 40, left : 30, right : 10},
+  margins: { top: 10, bottom: 10, left: 20, right: 20 },
+  paddings: { top: 20, bottom: 40, left: 30, right: 10 },
 
-  baseHeight : 240,
-  titleHeight : 20,
-  legendHeight : 30,
+  baseHeight: 240,
+  titleHeight: 20,
+  legendHeight: 30,
 
-  titleFontSize : 12,
+  titleFontSize: 12,
 };
 
 function getTopOffset(m) {
   return m.titleHeight + m.margins.top + m.paddings.top;
 }
 
-function getLeftOffset(m) { return m.margins.left + m.paddings.left; }
+function getLeftOffset(m) {
+  return m.margins.left + m.paddings.left;
+}
 
 function getExtraHeight(m) {
-  let totalExtraHeight = m.margins.top + m.margins.bottom + m.paddings.top +
-                         m.paddings.bottom + m.titleHeight + m.legendHeight;
+  let totalExtraHeight =
+    m.margins.top +
+    m.margins.bottom +
+    m.paddings.top +
+    m.paddings.bottom +
+    m.titleHeight +
+    m.legendHeight;
   return totalExtraHeight;
 }
 
 function getExtraWidth(m) {
   let totalExtraWidth =
-      m.margins.left + m.margins.right + m.paddings.left + m.paddings.right;
+    m.margins.left + m.margins.right + m.paddings.left + m.paddings.right;
 
   return totalExtraWidth;
 }
@@ -113,13 +125,13 @@ function getExtraWidth(m) {
 const INIT_CHART_UPDATE_TIMEOUT = 700;
 const CHART_POST_ANIMATE_TIMEOUT = 400;
 
-const DEFAULT_AXIS_CHART_TYPE = 'line';
-const AXIS_DATASET_CHART_TYPES = [ 'line', 'bar' ];
+const DEFAULT_AXIS_CHART_TYPE = "line";
+const AXIS_DATASET_CHART_TYPES = ["line", "bar"];
 
 const AXIS_LEGEND_BAR_SIZE = 100;
 
 const BAR_CHART_SPACE_RATIO = 0.5;
-const MIN_BAR_PERCENT_HEIGHT = 0.00;
+const MIN_BAR_PERCENT_HEIGHT = 0.0;
 
 const LINE_CHART_DOT_SIZE = 4;
 const DOT_OVERLAY_SIZE_INCR = 4;
@@ -139,19 +151,34 @@ const DEFAULT_CHAR_WIDTH = 7;
 const TOOLTIP_POINTER_TRIANGLE_HEIGHT = 5;
 
 const DEFAULT_CHART_COLORS = [
-  'light-blue', 'blue', 'violet', 'red', 'orange', 'yellow', 'green',
-  'light-green', 'purple', 'magenta', 'light-grey', 'dark-grey'
+  "light-blue",
+  "blue",
+  "violet",
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "light-green",
+  "purple",
+  "magenta",
+  "light-grey",
+  "dark-grey",
 ];
-const HEATMAP_COLORS_GREEN =
-    [ '#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127' ];
+const HEATMAP_COLORS_GREEN = [
+  "#ebedf0",
+  "#c6e48b",
+  "#7bc96f",
+  "#239a3b",
+  "#196127",
+];
 
 const DEFAULT_COLORS = {
-  bar : DEFAULT_CHART_COLORS,
-  line : DEFAULT_CHART_COLORS,
-  pie : DEFAULT_CHART_COLORS,
-  percentage : DEFAULT_CHART_COLORS,
-  heatmap : HEATMAP_COLORS_GREEN,
-  donut : DEFAULT_CHART_COLORS
+  bar: DEFAULT_CHART_COLORS,
+  line: DEFAULT_CHART_COLORS,
+  pie: DEFAULT_CHART_COLORS,
+  percentage: DEFAULT_CHART_COLORS,
+  heatmap: HEATMAP_COLORS_GREEN,
+  donut: DEFAULT_CHART_COLORS,
 };
 
 // Universal constants
@@ -159,11 +186,11 @@ const ANGLE_RATIO = Math.PI / 180;
 const FULL_ANGLE = 360;
 
 class SvgTip {
-  constructor({parent = null, colors = []}) {
+  constructor({ parent = null, colors = [] }) {
     this.parent = parent;
     this.colors = colors;
-    this.titleName = '';
-    this.titleValue = '';
+    this.titleName = "";
+    this.titleValue = "";
     this.listValues = [];
     this.titleValueFirst = 0;
 
@@ -176,7 +203,9 @@ class SvgTip {
     this.setup();
   }
 
-  setup() { this.makeTooltip(); }
+  setup() {
+    this.makeTooltip();
+  }
 
   refresh() {
     this.fill();
@@ -184,25 +213,27 @@ class SvgTip {
   }
 
   makeTooltip() {
-    this.container = $.create('div', {
-      inside : this.parent,
-      className : 'graph-svg-tip comparison',
-      innerHTML : `<span class="title"></span>
+    this.container = $.create("div", {
+      inside: this.parent,
+      className: "graph-svg-tip comparison",
+      innerHTML: `<span class="title"></span>
 				<ul class="data-point-list"></ul>
-				<div class="svg-pointer"></div>`
+				<div class="svg-pointer"></div>`,
     });
     this.hideTip();
 
-    this.title = this.container.querySelector('.title');
-    this.dataPointList = this.container.querySelector('.data-point-list');
+    this.title = this.container.querySelector(".title");
+    this.dataPointList = this.container.querySelector(".data-point-list");
 
-    this.parent.addEventListener('mouseleave', () => { this.hideTip(); });
+    this.parent.addEventListener("mouseleave", () => {
+      this.hideTip();
+    });
   }
 
   fill() {
     let title;
     if (this.index) {
-      this.container.setAttribute('data-point-index', this.index);
+      this.container.setAttribute("data-point-index", this.index);
     }
     if (this.titleValueFirst) {
       title = `<strong>${this.titleValue}</strong>${this.titleName}`;
@@ -210,18 +241,19 @@ class SvgTip {
       title = `${this.titleName}<strong>${this.titleValue}</strong>`;
     }
     this.title.innerHTML = title;
-    this.dataPointList.innerHTML = '';
+    this.dataPointList.innerHTML = "";
 
     this.listValues.map((set, i) => {
-      const color = this.colors[i] || 'black';
+      const color = this.colors[i] || "black";
       let value =
-          set.formatted === 0 || set.formatted ? set.formatted : set.value;
+        set.formatted === 0 || set.formatted ? set.formatted : set.value;
 
-      let li = $.create('li', {
-        styles : {'border-top' : `3px solid ${color}`},
-        innerHTML : `<strong style="display: block;">${
-            value === 0 || value ? value : ''}</strong>
-					${set.title ? set.title : ''}`
+      let li = $.create("li", {
+        styles: { "border-top": `3px solid ${color}` },
+        innerHTML: `<strong style="display: block;">${
+          value === 0 || value ? value : ""
+        }</strong>
+					${set.title ? set.title : ""}`,
       });
 
       this.dataPointList.appendChild(li);
@@ -232,14 +264,14 @@ class SvgTip {
     let width = this.container.offsetWidth;
 
     this.top =
-        this.y - this.container.offsetHeight - TOOLTIP_POINTER_TRIANGLE_HEIGHT;
+      this.y - this.container.offsetHeight - TOOLTIP_POINTER_TRIANGLE_HEIGHT;
     this.left = this.x - width / 2;
     let maxLeft = this.parent.offsetWidth - width;
 
-    let pointer = this.container.querySelector('.svg-pointer');
+    let pointer = this.container.querySelector(".svg-pointer");
 
     if (this.left < 0) {
-      pointer.style.left = `calc(50% - ${- 1 * this.left}px)`;
+      pointer.style.left = `calc(50% - ${-1 * this.left}px)`;
       this.left = 0;
     } else if (this.left > maxLeft) {
       let delta = this.left - maxLeft;
@@ -264,15 +296,15 @@ class SvgTip {
   }
 
   hideTip() {
-    this.container.style.top = '0px';
-    this.container.style.left = '0px';
-    this.container.style.opacity = '0';
+    this.container.style.top = "0px";
+    this.container.style.left = "0px";
+    this.container.style.opacity = "0";
   }
 
   showTip() {
-    this.container.style.top = this.top + 'px';
-    this.container.style.left = this.left + 'px';
-    this.container.style.opacity = '1';
+    this.container.style.top = this.top + "px";
+    this.container.style.left = this.left + "px";
+    this.container.style.opacity = "1";
   }
 }
 
@@ -280,7 +312,9 @@ class SvgTip {
  * Returns the value of a number upto 2 decimal places.
  * @param {Number} d Any number
  */
-function floatTwo(d) { return parseFloat(d.toFixed(2)); }
+function floatTwo(d) {
+  return parseFloat(d.toFixed(2));
+}
 
 /**
  * Returns whether or not two given arrays are equal.
@@ -322,8 +356,8 @@ function getStringWidth(string, charWidth) {
 
 function getPositionByAngle(angle, radius) {
   return {
-    x : Math.sin(angle * ANGLE_RATIO) * radius,
-    y : Math.cos(angle * ANGLE_RATIO) * radius,
+    x: Math.sin(angle * ANGLE_RATIO) * radius,
+    y: Math.cos(angle * ANGLE_RATIO) * radius,
   };
 }
 
@@ -337,19 +371,21 @@ function getBarHeightAndYAttr(yTop, zeroLine) {
     y = zeroLine;
   }
 
-  return [ height, y ];
+  return [height, y];
 }
 
-function equilizeNoOfElements(array1, array2,
-                              extraCount = array2.length - array1.length) {
-
+function equilizeNoOfElements(
+  array1,
+  array2,
+  extraCount = array2.length - array1.length
+) {
   // Doesn't work if either has zero elements.
   if (extraCount > 0) {
     array1 = fillArray(array1, extraCount);
   } else {
     array2 = fillArray(array2, extraCount);
   }
-  return [ array1, array2 ];
+  return [array1, array2];
 }
 
 function truncateString(txt, len) {
@@ -357,7 +393,7 @@ function truncateString(txt, len) {
     return;
   }
   if (txt.length > len) {
-    return txt.slice(0, len - 3) + '...';
+    return txt.slice(0, len - 3) + "...";
   } else {
     return txt;
   }
@@ -365,33 +401,28 @@ function truncateString(txt, len) {
 
 function shortenLargeNumber(label) {
   let number;
-  if (typeof label === 'number')
-    number = label;
-  else if (typeof label === 'string') {
+  if (typeof label === "number") number = label;
+  else if (typeof label === "string") {
     number = Number(label);
-    if (Number.isNaN(number))
-      return label;
+    if (Number.isNaN(number)) return label;
   }
 
   // Using absolute since log wont work for negative numbers
   let p = Math.floor(Math.log10(Math.abs(number)));
-  if (p <= 2)
-    return number; // Return as is for a 3 digit number of less
+  if (p <= 2) return number; // Return as is for a 3 digit number of less
   let l = Math.floor(p / 3);
   let shortened =
-      (Math.pow(10, p - l * 3) * +(number / Math.pow(10, p)).toFixed(1));
+    Math.pow(10, p - l * 3) * +(number / Math.pow(10, p)).toFixed(1);
 
   // Correct for floating point error upto 2 decimal places
-  return Math.round(shortened * 100) / 100 + ' ' +
-         [ '', 'K', 'M', 'B', 'T' ][l];
+  return Math.round(shortened * 100) / 100 + " " + ["", "K", "M", "B", "T"][l];
 }
 
 // cubic bezier curve calculation (from example by François Romain)
 function getSplineCurvePointsStr(xList, yList) {
-
   let points = [];
   for (let i = 0; i < xList.length; i++) {
-    points.push([ xList[i], yList[i] ]);
+    points.push([xList[i], yList[i]]);
   }
 
   let smoothing = 0.2;
@@ -399,8 +430,8 @@ function getSplineCurvePointsStr(xList, yList) {
     let lengthX = pointB[0] - pointA[0];
     let lengthY = pointB[1] - pointA[1];
     return {
-      length : Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
-      angle : Math.atan2(lengthY, lengthX)
+      length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
+      angle: Math.atan2(lengthY, lengthX),
     };
   };
 
@@ -412,7 +443,7 @@ function getSplineCurvePointsStr(xList, yList) {
     let length = o.length * smoothing;
     let x = current[0] + Math.cos(angle) * length;
     let y = current[1] + Math.sin(angle) * length;
-    return [ x, y ];
+    return [x, y];
   };
 
   let bezierCommand = (point, i, a) => {
@@ -422,37 +453,36 @@ function getSplineCurvePointsStr(xList, yList) {
   };
 
   let pointStr = (points, command) => {
-    return points.reduce((acc, point, i, a) =>
-                             i === 0 ? `${point[0]},${point[1]}`
-                                     : `${acc} ${command(point, i, a)}`,
-                         '');
+    return points.reduce(
+      (acc, point, i, a) =>
+        i === 0 ? `${point[0]},${point[1]}` : `${acc} ${command(point, i, a)}`,
+      ""
+    );
   };
 
   return pointStr(points, bezierCommand);
 }
 
 const PRESET_COLOR_MAP = {
-  'light-blue' : '#7cd6fd',
-  'blue' : '#5e64ff',
-  'violet' : '#743ee2',
-  'red' : '#ff5858',
-  'orange' : '#ffa00a',
-  'yellow' : '#feef72',
-  'green' : '#28a745',
-  'light-green' : '#98d85b',
-  'purple' : '#b554ff',
-  'magenta' : '#ffa3ef',
-  'black' : '#36114C',
-  'grey' : '#bdd3e6',
-  'light-grey' : '#f0f4f7',
-  'dark-grey' : '#b8c2cc'
+  "light-blue": "#7cd6fd",
+  blue: "#5e64ff",
+  violet: "#743ee2",
+  red: "#ff5858",
+  orange: "#ffa00a",
+  yellow: "#feef72",
+  green: "#28a745",
+  "light-green": "#98d85b",
+  purple: "#b554ff",
+  magenta: "#ffa3ef",
+  black: "#36114C",
+  grey: "#bdd3e6",
+  "light-grey": "#f0f4f7",
+  "dark-grey": "#b8c2cc",
 };
 
 function limitColor(r) {
-  if (r > 255)
-    return 255;
-  else if (r < 0)
-    return 0;
+  if (r > 255) return 255;
+  else if (r < 0) return 0;
   return r;
 }
 
@@ -465,31 +495,33 @@ function lightenDarkenColor(color, amt) {
   }
   let num = parseInt(col, 16);
   let r = limitColor((num >> 16) + amt);
-  let b = limitColor(((num >> 8) & 0x00FF) + amt);
-  let g = limitColor((num & 0x0000FF) + amt);
+  let b = limitColor(((num >> 8) & 0x00ff) + amt);
+  let g = limitColor((num & 0x0000ff) + amt);
   return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
 }
 
 function isValidColor(string) {
   // https://stackoverflow.com/a/32685393
   let HEX_RE = /(^\s*)(#)((?:[A-Fa-f0-9]{3}){1,2})$/i;
-  let RGB_RE =
-      /(^\s*)(rgb|hsl)(a?)[(]\s*([\d.]+\s*%?)\s*,\s*([\d.]+\s*%?)\s*,\s*([\d.]+\s*%?)\s*(?:,\s*([\d.]+)\s*)?[)]$/i;
+  let RGB_RE = /(^\s*)(rgb|hsl)(a?)[(]\s*([\d.]+\s*%?)\s*,\s*([\d.]+\s*%?)\s*,\s*([\d.]+\s*%?)\s*(?:,\s*([\d.]+)\s*)?[)]$/i;
   return HEX_RE.test(string) || RGB_RE.test(string);
 }
 
-const getColor = (color) => { return PRESET_COLOR_MAP[color] || color; };
+const getColor = (color) => {
+  return PRESET_COLOR_MAP[color] || color;
+};
 
 const AXIS_TICK_LENGTH = 6;
 const LABEL_MARGIN = 4;
 const LABEL_MAX_CHARS = 15;
 const FONT_SIZE = 10;
-const BASE_LINE_COLOR = '#dadada';
-const FONT_FILL = '#555b51';
+const BASE_LINE_COLOR = "#dadada";
+const FONT_FILL = "#555b51";
 
 function $$1(expr, con) {
-  return typeof expr === "string" ? (con || document).querySelector(expr)
-                                  : expr || null;
+  return typeof expr === "string"
+    ? (con || document).querySelector(expr)
+    : expr || null;
 }
 
 function createSVG(tag, o) {
@@ -504,17 +536,18 @@ function createSVG(tag, o) {
       var ref = $$1(val);
       ref.parentNode.insertBefore(element, ref);
       element.appendChild(ref);
-
     } else if (i === "styles") {
       if (typeof val === "object") {
-        Object.keys(val).map(prop => { element.style[prop] = val[prop]; });
+        Object.keys(val).map((prop) => {
+          element.style[prop] = val[prop];
+        });
       }
     } else {
       if (i === "className") {
         i = "class";
       }
       if (i === "innerHTML") {
-        element['textContent'] = val;
+        element["textContent"] = val;
       } else {
         element.setAttribute(i, val);
       }
@@ -525,66 +558,96 @@ function createSVG(tag, o) {
 }
 
 function renderVerticalGradient(svgDefElem, gradientId) {
-  return createSVG(
-      'linearGradient',
-      {inside : svgDefElem, id : gradientId, x1 : 0, x2 : 0, y1 : 0, y2 : 1});
+  return createSVG("linearGradient", {
+    inside: svgDefElem,
+    id: gradientId,
+    x1: 0,
+    x2: 0,
+    y1: 0,
+    y2: 1,
+  });
 }
 
 function setGradientStop(gradElem, offset, color, opacity) {
-  return createSVG('stop', {
-    'inside' : gradElem,
-    'style' : `stop-color: ${color}`,
-    'offset' : offset,
-    'stop-opacity' : opacity
+  return createSVG("stop", {
+    inside: gradElem,
+    style: `stop-color: ${color}`,
+    offset: offset,
+    "stop-opacity": opacity,
   });
 }
 
 function makeSVGContainer(parent, className, width, height) {
-  return createSVG(
-      'svg',
-      {className : className, inside : parent, width : width, height : height});
+  return createSVG("svg", {
+    className: className,
+    inside: parent,
+    width: width,
+    height: height,
+  });
 }
 
 function makeSVGDefs(svgContainer) {
-  return createSVG('defs', {
-    inside : svgContainer,
+  return createSVG("defs", {
+    inside: svgContainer,
   });
 }
 
-function makeSVGGroup(className, transform = '', parent = undefined) {
-  let args = {className : className, transform : transform};
-  if (parent)
-    args.inside = parent;
-  return createSVG('g', args);
+function makeSVGGroup(className, transform = "", parent = undefined) {
+  let args = { className: className, transform: transform };
+  if (parent) args.inside = parent;
+  return createSVG("g", args);
 }
 
-function makePath(pathStr, className = '', stroke = 'none', fill = 'none',
-                  strokeWidth = 2) {
-  return createSVG('path', {
-    className : className,
-    d : pathStr,
-    styles : {stroke : stroke, fill : fill, 'stroke-width' : strokeWidth}
+function makePath(
+  pathStr,
+  className = "",
+  stroke = "none",
+  fill = "none",
+  strokeWidth = 2
+) {
+  return createSVG("path", {
+    className: className,
+    d: pathStr,
+    styles: { stroke: stroke, fill: fill, "stroke-width": strokeWidth },
   });
 }
 
-function makeArcPathStr(startPosition, endPosition, center, radius,
-                        clockWise = 1, largeArc = 0) {
-  let [arcStartX, arcStartY] =
-      [ center.x + startPosition.x, center.y + startPosition.y ];
-  let [arcEndX, arcEndY] =
-      [ center.x + endPosition.x, center.y + endPosition.y ];
+function makeArcPathStr(
+  startPosition,
+  endPosition,
+  center,
+  radius,
+  clockWise = 1,
+  largeArc = 0
+) {
+  let [arcStartX, arcStartY] = [
+    center.x + startPosition.x,
+    center.y + startPosition.y,
+  ];
+  let [arcEndX, arcEndY] = [center.x + endPosition.x, center.y + endPosition.y];
   return `M${center.x} ${center.y}
 		L${arcStartX} ${arcStartY}
 		A ${radius} ${radius} 0 ${largeArc} ${clockWise ? 1 : 0}
 		${arcEndX} ${arcEndY} z`;
 }
 
-function makeCircleStr(startPosition, endPosition, center, radius,
-                       clockWise = 1, largeArc = 0) {
-  let [arcStartX, arcStartY] =
-      [ center.x + startPosition.x, center.y + startPosition.y ];
-  let [arcEndX, midArc, arcEndY] =
-      [ center.x + endPosition.x, center.y * 2, center.y + endPosition.y ];
+function makeCircleStr(
+  startPosition,
+  endPosition,
+  center,
+  radius,
+  clockWise = 1,
+  largeArc = 0
+) {
+  let [arcStartX, arcStartY] = [
+    center.x + startPosition.x,
+    center.y + startPosition.y,
+  ];
+  let [arcEndX, midArc, arcEndY] = [
+    center.x + endPosition.x,
+    center.y * 2,
+    center.y + endPosition.y,
+  ];
   return `M${center.x} ${center.y}
 		L${arcStartX} ${arcStartY}
 		A ${radius} ${radius} 0 ${largeArc} ${clockWise ? 1 : 0}
@@ -594,24 +657,41 @@ function makeCircleStr(startPosition, endPosition, center, radius,
 		${arcEndX} ${arcEndY} z`;
 }
 
-function makeArcStrokePathStr(startPosition, endPosition, center, radius,
-                              clockWise = 1, largeArc = 0) {
-  let [arcStartX, arcStartY] =
-      [ center.x + startPosition.x, center.y + startPosition.y ];
-  let [arcEndX, arcEndY] =
-      [ center.x + endPosition.x, center.y + endPosition.y ];
+function makeArcStrokePathStr(
+  startPosition,
+  endPosition,
+  center,
+  radius,
+  clockWise = 1,
+  largeArc = 0
+) {
+  let [arcStartX, arcStartY] = [
+    center.x + startPosition.x,
+    center.y + startPosition.y,
+  ];
+  let [arcEndX, arcEndY] = [center.x + endPosition.x, center.y + endPosition.y];
 
   return `M${arcStartX} ${arcStartY}
 		A ${radius} ${radius} 0 ${largeArc} ${clockWise ? 1 : 0}
 		${arcEndX} ${arcEndY}`;
 }
 
-function makeStrokeCircleStr(startPosition, endPosition, center, radius,
-                             clockWise = 1, largeArc = 0) {
-  let [arcStartX, arcStartY] =
-      [ center.x + startPosition.x, center.y + startPosition.y ];
+function makeStrokeCircleStr(
+  startPosition,
+  endPosition,
+  center,
+  radius,
+  clockWise = 1,
+  largeArc = 0
+) {
+  let [arcStartX, arcStartY] = [
+    center.x + startPosition.x,
+    center.y + startPosition.y,
+  ];
   let [arcEndX, midArc, arcEndY] = [
-    center.x + endPosition.x, radius * 2 + arcStartY, center.y + startPosition.y
+    center.x + endPosition.x,
+    radius * 2 + arcStartY,
+    center.y + startPosition.y,
   ];
 
   return `M${arcStartX} ${arcStartY}
@@ -623,12 +703,16 @@ function makeStrokeCircleStr(startPosition, endPosition, center, radius,
 }
 
 function makeGradient(svgDefElem, color, lighter = false) {
-  let gradientId = 'path-fill-gradient' +
-                   '-' + color + '-' + (lighter ? 'lighter' : 'default');
+  let gradientId =
+    "path-fill-gradient" +
+    "-" +
+    color +
+    "-" +
+    (lighter ? "lighter" : "default");
   let gradientDef = renderVerticalGradient(svgDefElem, gradientId);
-  let opacities = [ 1, 0.6, 0.2 ];
+  let opacities = [1, 0.6, 0.2];
   if (lighter) {
-    opacities = [ 0.4, 0.2, 0 ];
+    opacities = [0.4, 0.2, 0];
   }
 
   setGradientStop(gradientDef, "0%", color, opacities[0]);
@@ -638,89 +722,96 @@ function makeGradient(svgDefElem, color, lighter = false) {
   return gradientId;
 }
 
-function percentageBar(x, y, width, height,
-                       depth = PERCENTAGE_BAR_DEFAULT_DEPTH, fill = 'none') {
-
+function percentageBar(
+  x,
+  y,
+  width,
+  height,
+  depth = PERCENTAGE_BAR_DEFAULT_DEPTH,
+  fill = "none"
+) {
   let args = {
-    className : 'percentage-bar',
-    x : x,
-    y : y,
-    width : width,
-    height : height,
-    fill : fill,
-    styles : {
-      'stroke' : lightenDarkenColor(fill, -25),
+    className: "percentage-bar",
+    x: x,
+    y: y,
+    width: width,
+    height: height,
+    fill: fill,
+    styles: {
+      stroke: lightenDarkenColor(fill, -25),
       // Diabolically good: https://stackoverflow.com/a/9000859
       // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray
-      'stroke-dasharray' : `0, ${height + width}, ${width}, ${height}`,
-      'stroke-width' : depth
+      "stroke-dasharray": `0, ${height + width}, ${width}, ${height}`,
+      "stroke-width": depth,
     },
   };
 
   return createSVG("rect", args);
 }
 
-function heatSquare(className, x, y, size, fill = 'none', data = {}) {
+function heatSquare(className, x, y, size, fill = "none", data = {}) {
   let args = {
-    className : className,
-    x : x,
-    y : y,
-    width : size,
-    height : size,
-    fill : fill
+    className: className,
+    x: x,
+    y: y,
+    width: size,
+    height: size,
+    fill: fill,
   };
 
-  Object.keys(data).map(key => { args[key] = data[key]; });
+  Object.keys(data).map((key) => {
+    args[key] = data[key];
+  });
 
   return createSVG("rect", args);
 }
 
-function legendBar(x, y, size, fill = 'none', label, truncate = false) {
+function legendBar(x, y, size, fill = "none", label, truncate = false) {
   label = truncate ? truncateString(label, LABEL_MAX_CHARS) : label;
 
   let args = {
-    className : 'legend-bar',
-    x : 0,
-    y : 0,
-    width : size,
-    height : '2px',
-    fill : fill
+    className: "legend-bar",
+    x: 0,
+    y: 0,
+    width: size,
+    height: "2px",
+    fill: fill,
   };
-  let text = createSVG('text', {
-    className : 'legend-dataset-text',
-    x : 0,
-    y : 0,
-    dy : (FONT_SIZE * 2) + 'px',
-    'font-size' : (FONT_SIZE * 1.2) + 'px',
-    'text-anchor' : 'start',
-    fill : FONT_FILL,
-    innerHTML : label
+  let text = createSVG("text", {
+    className: "legend-dataset-text",
+    x: 0,
+    y: 0,
+    dy: FONT_SIZE * 2 + "px",
+    "font-size": FONT_SIZE * 1.2 + "px",
+    "text-anchor": "start",
+    fill: FONT_FILL,
+    innerHTML: label,
   });
 
-  let group = createSVG('g', {transform : `translate(${x}, ${y})`});
+  let group = createSVG("g", { transform: `translate(${x}, ${y})` });
   group.appendChild(createSVG("rect", args));
   group.appendChild(text);
 
   return group;
 }
 
-function legendDot(x, y, size, fill = 'none', label, truncate = false) {
+function legendDot(x, y, size, fill = "none", label, truncate = false) {
   label = truncate ? truncateString(label, LABEL_MAX_CHARS) : label;
 
-  let args = {className : 'legend-dot', cx : 0, cy : 0, r : size, fill : fill};
-  let text = createSVG('text', {
-    className : 'legend-dataset-text',
-    x : 0,
-    y : 0,
-    dx : (FONT_SIZE) + 'px',
-    dy : (FONT_SIZE / 3) + 'px',
-    'font-size' : (FONT_SIZE * 1.2) + 'px',
-    'text-anchor' : 'start',
-    fill : FONT_FILL,
-    innerHTML : label
+  let args = { className: "legend-dot", cx: 0, cy: 0, r: size, fill: fill };
+  let text = createSVG("text", {
+    className: "legend-dataset-text",
+    x: 0,
+    y: 0,
+    dx: FONT_SIZE + "px",
+    dy: FONT_SIZE / 3 + "px",
+    "font-size": FONT_SIZE * 1.2 + "px",
+    "text-anchor": "start",
+    fill: FONT_FILL,
+    innerHTML: label,
   });
 
-  let group = createSVG('g', {transform : `translate(${x}, ${y})`});
+  let group = createSVG("g", { transform: `translate(${x}, ${y})` });
   group.appendChild(createSVG("circle", args));
   group.appendChild(text);
 
@@ -729,43 +820,42 @@ function legendDot(x, y, size, fill = 'none', label, truncate = false) {
 
 function makeText(className, x, y, content, options = {}) {
   let fontSize = options.fontSize || FONT_SIZE;
-  let dy = options.dy !== undefined ? options.dy : (fontSize / 2);
+  let dy = options.dy !== undefined ? options.dy : fontSize / 2;
   let fill = options.fill || FONT_FILL;
-  let textAnchor = options.textAnchor || 'start';
-  return createSVG('text', {
-    className : className,
-    x : x,
-    y : y,
-    dy : dy + 'px',
-    'font-size' : fontSize + 'px',
-    fill : fill,
-    'text-anchor' : textAnchor,
-    innerHTML : content
+  let textAnchor = options.textAnchor || "start";
+  return createSVG("text", {
+    className: className,
+    x: x,
+    y: y,
+    dy: dy + "px",
+    "font-size": fontSize + "px",
+    fill: fill,
+    "text-anchor": textAnchor,
+    innerHTML: content,
   });
 }
 
 function makeVertLine(x, label, y1, y2, options = {}) {
-  if (!options.stroke)
-    options.stroke = BASE_LINE_COLOR;
-  let l = createSVG('line', {
-    className : 'line-vertical ' + options.className,
-    x1 : 0,
-    x2 : 0,
-    y1 : y1,
-    y2 : y2,
-    styles : {stroke : options.stroke}
+  if (!options.stroke) options.stroke = BASE_LINE_COLOR;
+  let l = createSVG("line", {
+    className: "line-vertical " + options.className,
+    x1: 0,
+    x2: 0,
+    y1: y1,
+    y2: y2,
+    styles: { stroke: options.stroke },
   });
 
-  let text = createSVG('text', {
-    x : 0,
-    y : y1 > y2 ? y1 + LABEL_MARGIN : y1 - LABEL_MARGIN - FONT_SIZE,
-    dy : FONT_SIZE + 'px',
-    'font-size' : FONT_SIZE + 'px',
-    'text-anchor' : 'middle',
-    innerHTML : label + ""
+  let text = createSVG("text", {
+    x: 0,
+    y: y1 > y2 ? y1 + LABEL_MARGIN : y1 - LABEL_MARGIN - FONT_SIZE,
+    dy: FONT_SIZE + "px",
+    "font-size": FONT_SIZE + "px",
+    "text-anchor": "middle",
+    innerHTML: label + "",
   });
 
-  let line = createSVG('g', {transform : `translate(${x}, 0)`});
+  let line = createSVG("g", { transform: `translate(${x}, 0)` });
 
   line.appendChild(l);
   line.appendChild(text);
@@ -774,38 +864,39 @@ function makeVertLine(x, label, y1, y2, options = {}) {
 }
 
 function makeHoriLine(y, label, x1, x2, options = {}) {
-  if (!options.stroke)
-    options.stroke = BASE_LINE_COLOR;
-  if (!options.lineType)
-    options.lineType = '';
-  if (options.shortenNumbers)
-    label = shortenLargeNumber(label);
+  if (!options.stroke) options.stroke = BASE_LINE_COLOR;
+  if (!options.lineType) options.lineType = "";
+  if (options.shortenNumbers) label = shortenLargeNumber(label);
 
-  let className = 'line-horizontal ' + options.className +
-                  (options.lineType === "dashed" ? "dashed" : "");
+  let className =
+    "line-horizontal " +
+    options.className +
+    (options.lineType === "dashed" ? "dashed" : "");
 
-  let l = createSVG('line', {
-    className : className,
-    x1 : x1,
-    x2 : x2,
-    y1 : 0,
-    y2 : 0,
-    styles : {stroke : options.stroke}
+  let l = createSVG("line", {
+    className: className,
+    x1: x1,
+    x2: x2,
+    y1: 0,
+    y2: 0,
+    styles: { stroke: options.stroke },
   });
 
-  let text = createSVG('text', {
-    x : x1 < x2 ? x1 - LABEL_MARGIN : x1 + LABEL_MARGIN,
-    y : 0,
-    dy : (FONT_SIZE / 2 - 2) + 'px',
-    'font-size' : FONT_SIZE + 'px',
-    'text-anchor' : x1 < x2 ? 'end' : 'start',
-    innerHTML : label + ""
+  let text = createSVG("text", {
+    x: x1 < x2 ? x1 - LABEL_MARGIN : x1 + LABEL_MARGIN,
+    y: 0,
+    dy: FONT_SIZE / 2 - 2 + "px",
+    "font-size": FONT_SIZE + "px",
+    "text-anchor": x1 < x2 ? "end" : "start",
+    innerHTML: label + "",
   });
 
-  let line =
-      createSVG('g', {transform : `translate(0, ${y})`, 'stroke-opacity' : 1});
+  let line = createSVG("g", {
+    transform: `translate(0, ${y})`,
+    "stroke-opacity": 1,
+  });
 
-  if (text === 0 || text === '0') {
+  if (text === 0 || text === "0") {
     line.style.stroke = "rgba(27, 31, 35, 0.6)";
   }
 
@@ -816,21 +907,16 @@ function makeHoriLine(y, label, x1, x2, options = {}) {
 }
 
 function yLine(y, label, width, options = {}) {
-  if (!options.pos)
-    options.pos = 'left';
-  if (!options.offset)
-    options.offset = 0;
-  if (!options.mode)
-    options.mode = 'span';
-  if (!options.stroke)
-    options.stroke = BASE_LINE_COLOR;
-  if (!options.className)
-    options.className = '';
+  if (!options.pos) options.pos = "left";
+  if (!options.offset) options.offset = 0;
+  if (!options.mode) options.mode = "span";
+  if (!options.stroke) options.stroke = BASE_LINE_COLOR;
+  if (!options.className) options.className = "";
 
   let x1 = -1 * AXIS_TICK_LENGTH;
-  let x2 = options.mode === 'span' ? width + AXIS_TICK_LENGTH : 0;
+  let x2 = options.mode === "span" ? width + AXIS_TICK_LENGTH : 0;
 
-  if (options.mode === 'tick' && options.pos === 'right') {
+  if (options.mode === "tick" && options.pos === "right") {
     x1 = width + AXIS_TICK_LENGTH;
     x2 = width;
   }
@@ -841,24 +927,19 @@ function yLine(y, label, width, options = {}) {
   x2 += options.offset;
 
   return makeHoriLine(y, label, x1, x2, {
-    stroke : options.stroke,
-    className : options.className,
-    lineType : options.lineType,
-    shortenNumbers : options.shortenNumbers
+    stroke: options.stroke,
+    className: options.className,
+    lineType: options.lineType,
+    shortenNumbers: options.shortenNumbers,
   });
 }
 
 function xLine(x, label, height, options = {}) {
-  if (!options.pos)
-    options.pos = 'bottom';
-  if (!options.offset)
-    options.offset = 0;
-  if (!options.mode)
-    options.mode = 'span';
-  if (!options.stroke)
-    options.stroke = BASE_LINE_COLOR;
-  if (!options.className)
-    options.className = '';
+  if (!options.pos) options.pos = "bottom";
+  if (!options.offset) options.offset = 0;
+  if (!options.mode) options.mode = "span";
+  if (!options.stroke) options.stroke = BASE_LINE_COLOR;
+  if (!options.className) options.className = "";
 
   // Draw X axis line in span/tick mode with optional label
   //                        	y2(span)
@@ -872,42 +953,42 @@ function xLine(x, label, height, options = {}) {
   //							y1
 
   let y1 = height + AXIS_TICK_LENGTH;
-  let y2 = options.mode === 'span' ? -1 * AXIS_TICK_LENGTH : height;
+  let y2 = options.mode === "span" ? -1 * AXIS_TICK_LENGTH : height;
 
-  if (options.mode === 'tick' && options.pos === 'top') {
+  if (options.mode === "tick" && options.pos === "top") {
     // top axis ticks
     y1 = -1 * AXIS_TICK_LENGTH;
     y2 = 0;
   }
 
   return makeVertLine(x, label, y1, y2, {
-    stroke : options.stroke,
-    className : options.className,
-    lineType : options.lineType
+    stroke: options.stroke,
+    className: options.className,
+    lineType: options.lineType,
   });
 }
 
 function yMarker(y, label, width, options = {}) {
-  if (!options.labelPos)
-    options.labelPos = 'right';
-  let x = options.labelPos === 'left'
-              ? LABEL_MARGIN
-              : width - getStringWidth(label, 5) - LABEL_MARGIN;
+  if (!options.labelPos) options.labelPos = "right";
+  let x =
+    options.labelPos === "left"
+      ? LABEL_MARGIN
+      : width - getStringWidth(label, 5) - LABEL_MARGIN;
 
-  let labelSvg = createSVG('text', {
-    className : 'chart-label',
-    x : x,
-    y : 0,
-    dy : (FONT_SIZE / -2) + 'px',
-    'font-size' : FONT_SIZE + 'px',
-    'text-anchor' : 'start',
-    innerHTML : label + ""
+  let labelSvg = createSVG("text", {
+    className: "chart-label",
+    x: x,
+    y: 0,
+    dy: FONT_SIZE / -2 + "px",
+    "font-size": FONT_SIZE + "px",
+    "text-anchor": "start",
+    innerHTML: label + "",
   });
 
-  let line = makeHoriLine(y, '', 0, width, {
-    stroke : options.stroke || BASE_LINE_COLOR,
-    className : options.className || '',
-    lineType : options.lineType
+  let line = makeHoriLine(y, "", 0, width, {
+    stroke: options.stroke || BASE_LINE_COLOR,
+    className: options.className || "",
+    lineType: options.lineType,
   });
 
   line.appendChild(labelSvg);
@@ -919,37 +1000,37 @@ function yRegion(y1, y2, width, label, options = {}) {
   // return a group
   let height = y1 - y2;
 
-  let rect = createSVG('rect', {
-    className : `bar mini`, // remove class
-    styles : {
-      fill : `rgba(228, 234, 239, 0.49)`,
-      stroke : BASE_LINE_COLOR,
-      'stroke-dasharray' : `${width}, ${height}`
+  let rect = createSVG("rect", {
+    className: `bar mini`, // remove class
+    styles: {
+      fill: `rgba(228, 234, 239, 0.49)`,
+      stroke: BASE_LINE_COLOR,
+      "stroke-dasharray": `${width}, ${height}`,
     },
     // 'data-point-index': index,
-    x : 0,
-    y : 0,
-    width : width,
-    height : height
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
   });
 
-  if (!options.labelPos)
-    options.labelPos = 'right';
-  let x = options.labelPos === 'left'
-              ? LABEL_MARGIN
-              : width - getStringWidth(label + "", 4.5) - LABEL_MARGIN;
+  if (!options.labelPos) options.labelPos = "right";
+  let x =
+    options.labelPos === "left"
+      ? LABEL_MARGIN
+      : width - getStringWidth(label + "", 4.5) - LABEL_MARGIN;
 
-  let labelSvg = createSVG('text', {
-    className : 'chart-label',
-    x : x,
-    y : 0,
-    dy : (FONT_SIZE / -2) + 'px',
-    'font-size' : FONT_SIZE + 'px',
-    'text-anchor' : 'start',
-    innerHTML : label + ""
+  let labelSvg = createSVG("text", {
+    className: "chart-label",
+    x: x,
+    y: 0,
+    dy: FONT_SIZE / -2 + "px",
+    "font-size": FONT_SIZE + "px",
+    "text-anchor": "start",
+    innerHTML: label + "",
   });
 
-  let region = createSVG('g', {transform : `translate(0, ${y2})`});
+  let region = createSVG("g", { transform: `translate(0, ${y2})` });
 
   region.appendChild(rect);
   region.appendChild(labelSvg);
@@ -957,8 +1038,16 @@ function yRegion(y1, y2, width, label, options = {}) {
   return region;
 }
 
-function datasetBar(x, yTop, width, color, label = '', index = 0, offset = 0,
-                    meta = {}) {
+function datasetBar(
+  x,
+  yTop,
+  width,
+  color,
+  label = "",
+  index = 0,
+  offset = 0,
+  meta = {}
+) {
   let [height, y] = getBarHeightAndYAttr(yTop, meta.zeroLine);
   y -= offset;
 
@@ -967,14 +1056,14 @@ function datasetBar(x, yTop, width, color, label = '', index = 0, offset = 0,
     y -= meta.minHeight;
   }
 
-  let rect = createSVG('rect', {
-    className : `bar mini`,
-    style : `fill: ${color}`,
-    'data-point-index' : index,
-    x : x,
-    y : y,
-    width : width,
-    height : height
+  let rect = createSVG("rect", {
+    className: `bar mini`,
+    style: `fill: ${color}`,
+    "data-point-index": index,
+    x: x,
+    y: y,
+    width: width,
+    height: height,
   });
 
   label += "";
@@ -982,20 +1071,22 @@ function datasetBar(x, yTop, width, color, label = '', index = 0, offset = 0,
   if (!label && !label.length) {
     return rect;
   } else {
-    rect.setAttribute('y', 0);
-    rect.setAttribute('x', 0);
-    let text = createSVG('text', {
-      className : 'data-point-value',
-      x : width / 2,
-      y : 0,
-      dy : (FONT_SIZE / 2 * -1) + 'px',
-      'font-size' : FONT_SIZE + 'px',
-      'text-anchor' : 'middle',
-      innerHTML : label
+    rect.setAttribute("y", 0);
+    rect.setAttribute("x", 0);
+    let text = createSVG("text", {
+      className: "data-point-value",
+      x: width / 2,
+      y: 0,
+      dy: (FONT_SIZE / 2) * -1 + "px",
+      "font-size": FONT_SIZE + "px",
+      "text-anchor": "middle",
+      innerHTML: label,
     });
 
-    let group = createSVG(
-        'g', {'data-point-index' : index, transform : `translate(${x}, ${y})`});
+    let group = createSVG("g", {
+      "data-point-index": index,
+      transform: `translate(${x}, ${y})`,
+    });
     group.appendChild(rect);
     group.appendChild(text);
 
@@ -1003,13 +1094,13 @@ function datasetBar(x, yTop, width, color, label = '', index = 0, offset = 0,
   }
 }
 
-function datasetDot(x, y, radius, color, label = '', index = 0) {
-  let dot = createSVG('circle', {
-    style : `fill: ${color}`,
-    'data-point-index' : index,
-    cx : x,
-    cy : y,
-    r : radius
+function datasetDot(x, y, radius, color, label = "", index = 0) {
+  let dot = createSVG("circle", {
+    style: `fill: ${color}`,
+    "data-point-index": index,
+    cx: x,
+    cy: y,
+    r: radius,
   });
 
   label += "";
@@ -1017,21 +1108,23 @@ function datasetDot(x, y, radius, color, label = '', index = 0) {
   if (!label && !label.length) {
     return dot;
   } else {
-    dot.setAttribute('cy', 0);
-    dot.setAttribute('cx', 0);
+    dot.setAttribute("cy", 0);
+    dot.setAttribute("cx", 0);
 
-    let text = createSVG('text', {
-      className : 'data-point-value',
-      x : 0,
-      y : 0,
-      dy : (FONT_SIZE / 2 * -1 - radius) + 'px',
-      'font-size' : FONT_SIZE + 'px',
-      'text-anchor' : 'middle',
-      innerHTML : label
+    let text = createSVG("text", {
+      className: "data-point-value",
+      x: 0,
+      y: 0,
+      dy: (FONT_SIZE / 2) * -1 - radius + "px",
+      "font-size": FONT_SIZE + "px",
+      "text-anchor": "middle",
+      innerHTML: label,
     });
 
-    let group = createSVG(
-        'g', {'data-point-index' : index, transform : `translate(${x}, ${y})`});
+    let group = createSVG("g", {
+      "data-point-index": index,
+      transform: `translate(${x}, ${y})`,
+    });
     group.appendChild(dot);
     group.appendChild(text);
 
@@ -1040,14 +1133,13 @@ function datasetDot(x, y, radius, color, label = '', index = 0) {
 }
 
 function getPaths(xList, yList, color, options = {}, meta = {}) {
-  let pointsList = yList.map((y, i) => (xList[i] + ',' + y));
+  let pointsList = yList.map((y, i) => xList[i] + "," + y);
   let pointsStr = pointsList.join("L");
 
   // Spline
-  if (options.spline)
-    pointsStr = getSplineCurvePointsStr(xList, yList);
+  if (options.spline) pointsStr = getSplineCurvePointsStr(xList, yList);
 
-  let path = makePath("M" + pointsStr, 'line-graph-path', color);
+  let path = makePath("M" + pointsStr, "line-graph-path", color);
 
   // HeatLine
   if (options.heatline) {
@@ -1055,124 +1147,136 @@ function getPaths(xList, yList, color, options = {}, meta = {}) {
     path.style.stroke = `url(#${gradient_id})`;
   }
 
-  let paths = {path : path};
+  let paths = { path: path };
 
   // Region
   if (options.regionFill) {
     let gradient_id_region = makeGradient(meta.svgDefs, color, true);
 
-    let pathStr = "M" +
-                  `${xList[0]},${meta.zeroLine}L` + pointsStr +
-                  `L${xList.slice(-1)[0]},${meta.zeroLine}`;
-    paths.region =
-        makePath(pathStr, `region-fill`, 'none', `url(#${gradient_id_region})`);
+    let pathStr =
+      "M" +
+      `${xList[0]},${meta.zeroLine}L` +
+      pointsStr +
+      `L${xList.slice(-1)[0]},${meta.zeroLine}`;
+    paths.region = makePath(
+      pathStr,
+      `region-fill`,
+      "none",
+      `url(#${gradient_id_region})`
+    );
   }
 
   return paths;
 }
 
 let makeOverlay = {
-  'bar' : (unit) => {
+  bar: (unit) => {
     let transformValue;
-    if (unit.nodeName !== 'rect') {
-      transformValue = unit.getAttribute('transform');
+    if (unit.nodeName !== "rect") {
+      transformValue = unit.getAttribute("transform");
       unit = unit.childNodes[0];
     }
     let overlay = unit.cloneNode();
-    overlay.style.fill = '#000000';
-    overlay.style.opacity = '0.4';
+    overlay.style.fill = "#000000";
+    overlay.style.opacity = "0.4";
 
     if (transformValue) {
-      overlay.setAttribute('transform', transformValue);
+      overlay.setAttribute("transform", transformValue);
     }
     return overlay;
   },
 
-  'dot' : (unit) => {
+  dot: (unit) => {
     let transformValue;
-    if (unit.nodeName !== 'circle') {
-      transformValue = unit.getAttribute('transform');
+    if (unit.nodeName !== "circle") {
+      transformValue = unit.getAttribute("transform");
       unit = unit.childNodes[0];
     }
     let overlay = unit.cloneNode();
-    let radius = unit.getAttribute('r');
-    let fill = unit.getAttribute('fill');
-    overlay.setAttribute('r', parseInt(radius) + DOT_OVERLAY_SIZE_INCR);
-    overlay.setAttribute('fill', fill);
-    overlay.style.opacity = '0.6';
+    let radius = unit.getAttribute("r");
+    let fill = unit.getAttribute("fill");
+    overlay.setAttribute("r", parseInt(radius) + DOT_OVERLAY_SIZE_INCR);
+    overlay.setAttribute("fill", fill);
+    overlay.style.opacity = "0.6";
 
     if (transformValue) {
-      overlay.setAttribute('transform', transformValue);
+      overlay.setAttribute("transform", transformValue);
     }
     return overlay;
   },
 
-  'heat_square' : (unit) => {
+  heat_square: (unit) => {
     let transformValue;
-    if (unit.nodeName !== 'circle') {
-      transformValue = unit.getAttribute('transform');
+    if (unit.nodeName !== "circle") {
+      transformValue = unit.getAttribute("transform");
       unit = unit.childNodes[0];
     }
     let overlay = unit.cloneNode();
-    let radius = unit.getAttribute('r');
-    let fill = unit.getAttribute('fill');
-    overlay.setAttribute('r', parseInt(radius) + DOT_OVERLAY_SIZE_INCR);
-    overlay.setAttribute('fill', fill);
-    overlay.style.opacity = '0.6';
+    let radius = unit.getAttribute("r");
+    let fill = unit.getAttribute("fill");
+    overlay.setAttribute("r", parseInt(radius) + DOT_OVERLAY_SIZE_INCR);
+    overlay.setAttribute("fill", fill);
+    overlay.style.opacity = "0.6";
 
     if (transformValue) {
-      overlay.setAttribute('transform', transformValue);
+      overlay.setAttribute("transform", transformValue);
     }
     return overlay;
-  }
+  },
 };
 
 let updateOverlay = {
-  'bar' : (unit, overlay) => {
+  bar: (unit, overlay) => {
     let transformValue;
-    if (unit.nodeName !== 'rect') {
-      transformValue = unit.getAttribute('transform');
+    if (unit.nodeName !== "rect") {
+      transformValue = unit.getAttribute("transform");
       unit = unit.childNodes[0];
     }
-    let attributes = [ 'x', 'y', 'width', 'height' ];
+    let attributes = ["x", "y", "width", "height"];
     Object.values(unit.attributes)
-        .filter(attr => attributes.includes(attr.name) && attr.specified)
-        .map(attr => { overlay.setAttribute(attr.name, attr.nodeValue); });
+      .filter((attr) => attributes.includes(attr.name) && attr.specified)
+      .map((attr) => {
+        overlay.setAttribute(attr.name, attr.nodeValue);
+      });
 
     if (transformValue) {
-      overlay.setAttribute('transform', transformValue);
+      overlay.setAttribute("transform", transformValue);
     }
   },
 
-  'dot' : (unit, overlay) => {
+  dot: (unit, overlay) => {
     let transformValue;
-    if (unit.nodeName !== 'circle') {
-      transformValue = unit.getAttribute('transform');
+    if (unit.nodeName !== "circle") {
+      transformValue = unit.getAttribute("transform");
       unit = unit.childNodes[0];
     }
-    let attributes = [ 'cx', 'cy' ];
+    let attributes = ["cx", "cy"];
     Object.values(unit.attributes)
-        .filter(attr => attributes.includes(attr.name) && attr.specified)
-        .map(attr => { overlay.setAttribute(attr.name, attr.nodeValue); });
+      .filter((attr) => attributes.includes(attr.name) && attr.specified)
+      .map((attr) => {
+        overlay.setAttribute(attr.name, attr.nodeValue);
+      });
 
     if (transformValue) {
-      overlay.setAttribute('transform', transformValue);
+      overlay.setAttribute("transform", transformValue);
     }
   },
 
-  'heat_square' : (unit, overlay) => {
+  heat_square: (unit, overlay) => {
     let transformValue;
-    if (unit.nodeName !== 'circle') {
-      transformValue = unit.getAttribute('transform');
+    if (unit.nodeName !== "circle") {
+      transformValue = unit.getAttribute("transform");
       unit = unit.childNodes[0];
     }
-    let attributes = [ 'cx', 'cy' ];
+    let attributes = ["cx", "cy"];
     Object.values(unit.attributes)
-        .filter(attr => attributes.includes(attr.name) && attr.specified)
-        .map(attr => { overlay.setAttribute(attr.name, attr.nodeValue); });
+      .filter((attr) => attributes.includes(attr.name) && attr.specified)
+      .map((attr) => {
+        overlay.setAttribute(attr.name, attr.nodeValue);
+      });
 
     if (transformValue) {
-      overlay.setAttribute('transform', transformValue);
+      overlay.setAttribute("transform", transformValue);
     }
   },
 };
@@ -1182,22 +1286,26 @@ const PATH_ANIM_DUR = 350;
 const MARKER_LINE_ANIM_DUR = UNIT_ANIM_DUR;
 const REPLACE_ALL_NEW_DUR = 250;
 
-const STD_EASING = 'easein';
+const STD_EASING = "easein";
 
 function translate(unit, oldCoord, newCoord, duration) {
-  let old = typeof oldCoord === 'string' ? oldCoord : oldCoord.join(', ');
+  let old = typeof oldCoord === "string" ? oldCoord : oldCoord.join(", ");
   return [
-    unit, {transform : newCoord.join(', ')}, duration, STD_EASING, "translate",
-    {transform : old}
+    unit,
+    { transform: newCoord.join(", ") },
+    duration,
+    STD_EASING,
+    "translate",
+    { transform: old },
   ];
 }
 
 function translateVertLine(xLine, newX, oldX) {
-  return translate(xLine, [ oldX, 0 ], [ newX, 0 ], MARKER_LINE_ANIM_DUR);
+  return translate(xLine, [oldX, 0], [newX, 0], MARKER_LINE_ANIM_DUR);
 }
 
 function translateHoriLine(yLine, newY, oldY) {
-  return translate(yLine, [ 0, oldY ], [ 0, newY ], MARKER_LINE_ANIM_DUR);
+  return translate(yLine, [0, oldY], [0, newY], MARKER_LINE_ANIM_DUR);
 }
 
 function animateRegion(rectGroup, newY1, newY2, oldY2) {
@@ -1205,55 +1313,72 @@ function animateRegion(rectGroup, newY1, newY2, oldY2) {
   let rect = rectGroup.childNodes[0];
   let width = rect.getAttribute("width");
   let rectAnim = [
-    rect, {height : newHeight, 'stroke-dasharray' : `${width}, ${newHeight}`},
-    MARKER_LINE_ANIM_DUR, STD_EASING
+    rect,
+    { height: newHeight, "stroke-dasharray": `${width}, ${newHeight}` },
+    MARKER_LINE_ANIM_DUR,
+    STD_EASING,
   ];
 
-  let groupAnim =
-      translate(rectGroup, [ 0, oldY2 ], [ 0, newY2 ], MARKER_LINE_ANIM_DUR);
-  return [ rectAnim, groupAnim ];
+  let groupAnim = translate(
+    rectGroup,
+    [0, oldY2],
+    [0, newY2],
+    MARKER_LINE_ANIM_DUR
+  );
+  return [rectAnim, groupAnim];
 }
 
 function animateBar(bar, x, yTop, width, offset = 0, meta = {}) {
   let [height, y] = getBarHeightAndYAttr(yTop, meta.zeroLine);
   y -= offset;
-  if (bar.nodeName !== 'rect') {
+  if (bar.nodeName !== "rect") {
     let rect = bar.childNodes[0];
-    let rectAnim =
-        [ rect, {width : width, height : height}, UNIT_ANIM_DUR, STD_EASING ];
+    let rectAnim = [
+      rect,
+      { width: width, height: height },
+      UNIT_ANIM_DUR,
+      STD_EASING,
+    ];
 
     let oldCoordStr = bar.getAttribute("transform").split("(")[1].slice(0, -1);
-    let groupAnim = translate(bar, oldCoordStr, [ x, y ], MARKER_LINE_ANIM_DUR);
-    return [ rectAnim, groupAnim ];
+    let groupAnim = translate(bar, oldCoordStr, [x, y], MARKER_LINE_ANIM_DUR);
+    return [rectAnim, groupAnim];
   } else {
-    return [ [
-      bar, {width : width, height : height, x : x, y : y}, UNIT_ANIM_DUR,
-      STD_EASING
-    ] ];
+    return [
+      [
+        bar,
+        { width: width, height: height, x: x, y: y },
+        UNIT_ANIM_DUR,
+        STD_EASING,
+      ],
+    ];
   }
   // bar.animate({height: args.newHeight, y: yTop}, UNIT_ANIM_DUR, mina.easein);
 }
 
 function animateDot(dot, x, y) {
-  if (dot.nodeName !== 'circle') {
+  if (dot.nodeName !== "circle") {
     let oldCoordStr = dot.getAttribute("transform").split("(")[1].slice(0, -1);
-    let groupAnim = translate(dot, oldCoordStr, [ x, y ], MARKER_LINE_ANIM_DUR);
-    return [ groupAnim ];
+    let groupAnim = translate(dot, oldCoordStr, [x, y], MARKER_LINE_ANIM_DUR);
+    return [groupAnim];
   } else {
-    return [ [ dot, {cx : x, cy : y}, UNIT_ANIM_DUR, STD_EASING ] ];
+    return [[dot, { cx: x, cy: y }, UNIT_ANIM_DUR, STD_EASING]];
   }
   // dot.animate({cy: yTop}, UNIT_ANIM_DUR, mina.easein);
 }
 
 function animatePath(paths, newXList, newYList, zeroLine, spline) {
   let pathComponents = [];
-  let pointsStr = newYList.map((y, i) => (newXList[i] + ',' + y)).join("L");
+  let pointsStr = newYList.map((y, i) => newXList[i] + "," + y).join("L");
 
-  if (spline)
-    pointsStr = getSplineCurvePointsStr(newXList, newYList);
+  if (spline) pointsStr = getSplineCurvePointsStr(newXList, newYList);
 
-  const animPath =
-      [ paths.path, {d : "M" + pointsStr}, PATH_ANIM_DUR, STD_EASING ];
+  const animPath = [
+    paths.path,
+    { d: "M" + pointsStr },
+    PATH_ANIM_DUR,
+    STD_EASING,
+  ];
   pathComponents.push(animPath);
 
   if (paths.region) {
@@ -1261,8 +1386,10 @@ function animatePath(paths, newXList, newYList, zeroLine, spline) {
     let regEndPt = `L${newXList.slice(-1)[0]}, ${zeroLine}`;
 
     const animRegion = [
-      paths.region, {d : "M" + regStartPt + pointsStr + regEndPt},
-      PATH_ANIM_DUR, STD_EASING
+      paths.region,
+      { d: "M" + regStartPt + pointsStr + regEndPt },
+      PATH_ANIM_DUR,
+      STD_EASING,
     ];
     pathComponents.push(animRegion);
   }
@@ -1271,50 +1398,59 @@ function animatePath(paths, newXList, newYList, zeroLine, spline) {
 }
 
 function animatePathStr(oldPath, pathStr) {
-  return [ oldPath, {d : pathStr}, UNIT_ANIM_DUR, STD_EASING ];
+  return [oldPath, { d: pathStr }, UNIT_ANIM_DUR, STD_EASING];
 }
 
 // Leveraging SMIL Animations
 
 const EASING = {
-  ease : "0.25 0.1 0.25 1",
-  linear : "0 0 1 1",
+  ease: "0.25 0.1 0.25 1",
+  linear: "0 0 1 1",
   // easein: "0.42 0 1 1",
-  easein : "0.1 0.8 0.2 1",
-  easeout : "0 0 0.58 1",
-  easeinout : "0.42 0 0.58 1"
+  easein: "0.1 0.8 0.2 1",
+  easeout: "0 0 0.58 1",
+  easeinout: "0.42 0 0.58 1",
 };
 
-function animateSVGElement(element, props, dur, easingType = "linear",
-                           type = undefined, oldValues = {}) {
-
+function animateSVGElement(
+  element,
+  props,
+  dur,
+  easingType = "linear",
+  type = undefined,
+  oldValues = {}
+) {
   let animElement = element.cloneNode(true);
   let newElement = element.cloneNode(true);
 
   for (var attributeName in props) {
     let animateElement;
-    if (attributeName === 'transform') {
-      animateElement = document.createElementNS("http://www.w3.org/2000/svg",
-                                                "animateTransform");
+    if (attributeName === "transform") {
+      animateElement = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "animateTransform"
+      );
     } else {
-      animateElement =
-          document.createElementNS("http://www.w3.org/2000/svg", "animate");
+      animateElement = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "animate"
+      );
     }
     let currentValue =
-        oldValues[attributeName] || element.getAttribute(attributeName);
+      oldValues[attributeName] || element.getAttribute(attributeName);
     let value = props[attributeName];
 
     let animAttr = {
-      attributeName : attributeName,
-      from : currentValue,
-      to : value,
-      begin : "0s",
-      dur : dur / 1000 + "s",
-      values : currentValue + ";" + value,
-      keySplines : EASING[easingType],
-      keyTimes : "0;1",
-      calcMode : "spline",
-      fill : 'freeze'
+      attributeName: attributeName,
+      from: currentValue,
+      to: value,
+      begin: "0s",
+      dur: dur / 1000 + "s",
+      values: currentValue + ";" + value,
+      keySplines: EASING[easingType],
+      keyTimes: "0;1",
+      calcMode: "spline",
+      fill: "freeze",
     };
 
     if (type) {
@@ -1334,10 +1470,11 @@ function animateSVGElement(element, props, dur, easingType = "linear",
     }
   }
 
-  return [ animElement, newElement ];
+  return [animElement, newElement];
 }
 
-function transform(element, style) { // eslint-disable-line no-unused-vars
+function transform(element, style) {
+  // eslint-disable-line no-unused-vars
   element.style.transform = style;
   element.style.webkitTransform = style;
   element.style.msTransform = style;
@@ -1349,7 +1486,7 @@ function animateSVG(svgContainer, elements) {
   let newElements = [];
   let animElements = [];
 
-  elements.map(element => {
+  elements.map((element) => {
     let unit = element[0];
     let parent = unit.parentNode;
 
@@ -1359,7 +1496,7 @@ function animateSVG(svgContainer, elements) {
     [animElement, newElement] = animateSVGElement(...element);
 
     newElements.push(newElement);
-    animElements.push([ animElement, parent ]);
+    animElements.push([animElement, parent]);
 
     parent.replaceChild(animElement, unit);
   });
@@ -1375,8 +1512,7 @@ function animateSVG(svgContainer, elements) {
 }
 
 function runSMILAnimation(parent, svgElement, elementsToAnimate) {
-  if (elementsToAnimate.length === 0)
-    return;
+  if (elementsToAnimate.length === 0) return;
 
   let animSvgElement = animateSVG(svgElement, elementsToAnimate);
   if (svgElement.parentNode == parent) {
@@ -1394,18 +1530,18 @@ function runSMILAnimation(parent, svgElement, elementsToAnimate) {
 }
 
 const CSSTEXT =
-    ".chart-container{position:relative;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif}.chart-container .axis,.chart-container .chart-label{fill:#555b51}.chart-container .axis line,.chart-container .chart-label line{stroke:#dadada}.chart-container .dataset-units circle{stroke:#fff;stroke-width:2}.chart-container .dataset-units path{fill:none;stroke-opacity:1;stroke-width:2px}.chart-container .dataset-path{stroke-width:2px}.chart-container .path-group path{fill:none;stroke-opacity:1;stroke-width:2px}.chart-container line.dashed{stroke-dasharray:5,3}.chart-container .axis-line .specific-value{text-anchor:start}.chart-container .axis-line .y-line{text-anchor:end}.chart-container .axis-line .x-line{text-anchor:middle}.chart-container .legend-dataset-text{fill:#6c7680;font-weight:600}.graph-svg-tip{position:absolute;z-index:99999;padding:10px;font-size:12px;color:#959da5;text-align:center;background:rgba(0,0,0,.8);border-radius:3px}.graph-svg-tip ul{padding-left:0;display:flex}.graph-svg-tip ol{padding-left:0;display:flex}.graph-svg-tip ul.data-point-list li{min-width:90px;flex:1;font-weight:600}.graph-svg-tip strong{color:#dfe2e5;font-weight:600}.graph-svg-tip .svg-pointer{position:absolute;height:5px;margin:0 0 0 -5px;content:' ';border:5px solid transparent;border-top-color:rgba(0,0,0,.8)}.graph-svg-tip.comparison{padding:0;text-align:left;pointer-events:none}.graph-svg-tip.comparison .title{display:block;padding:10px;margin:0;font-weight:600;line-height:1;pointer-events:none}.graph-svg-tip.comparison ul{margin:0;white-space:nowrap;list-style:none}.graph-svg-tip.comparison li{display:inline-block;padding:5px 10px}";
+  ".chart-container{position:relative;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif}.chart-container .axis,.chart-container .chart-label{fill:#555b51}.chart-container .axis line,.chart-container .chart-label line{stroke:#dadada}.chart-container .dataset-units circle{stroke:#fff;stroke-width:2}.chart-container .dataset-units path{fill:none;stroke-opacity:1;stroke-width:2px}.chart-container .dataset-path{stroke-width:2px}.chart-container .path-group path{fill:none;stroke-opacity:1;stroke-width:2px}.chart-container line.dashed{stroke-dasharray:5,3}.chart-container .axis-line .specific-value{text-anchor:start}.chart-container .axis-line .y-line{text-anchor:end}.chart-container .axis-line .x-line{text-anchor:middle}.chart-container .legend-dataset-text{fill:#6c7680;font-weight:600}.graph-svg-tip{position:absolute;z-index:99999;padding:10px;font-size:12px;color:#959da5;text-align:center;background:rgba(0,0,0,.8);border-radius:3px}.graph-svg-tip ul{padding-left:0;display:flex}.graph-svg-tip ol{padding-left:0;display:flex}.graph-svg-tip ul.data-point-list li{min-width:90px;flex:1;font-weight:600}.graph-svg-tip strong{color:#dfe2e5;font-weight:600}.graph-svg-tip .svg-pointer{position:absolute;height:5px;margin:0 0 0 -5px;content:' ';border:5px solid transparent;border-top-color:rgba(0,0,0,.8)}.graph-svg-tip.comparison{padding:0;text-align:left;pointer-events:none}.graph-svg-tip.comparison .title{display:block;padding:10px;margin:0;font-weight:600;line-height:1;pointer-events:none}.graph-svg-tip.comparison ul{margin:0;white-space:nowrap;list-style:none}.graph-svg-tip.comparison li{display:inline-block;padding:5px 10px}";
 
 function downloadFile(filename, data) {
-  var a = document.createElement('a');
+  var a = document.createElement("a");
   a.style = "display: none";
-  var blob = new Blob(data, {type : "image/svg+xml; charset=utf-8"});
+  var blob = new Blob(data, { type: "image/svg+xml; charset=utf-8" });
   var url = window.URL.createObjectURL(blob);
   a.href = url;
   a.download = filename;
   document.body.appendChild(a);
   a.click();
-  setTimeout(function() {
+  setTimeout(function () {
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   }, 300);
@@ -1413,13 +1549,13 @@ function downloadFile(filename, data) {
 
 function prepareForExport(svg) {
   let clone = svg.cloneNode(true);
-  clone.classList.add('chart-container');
-  clone.setAttribute('xmlns', "http://www.w3.org/2000/svg");
-  clone.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
-  let styleEl = $.create('style', {'innerHTML' : CSSTEXT});
+  clone.classList.add("chart-container");
+  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+  let styleEl = $.create("style", { innerHTML: CSSTEXT });
   clone.insertBefore(styleEl, clone.firstChild);
 
-  let container = $.create('div');
+  let container = $.create("div");
   container.appendChild(clone);
 
   return container.innerHTML;
@@ -1427,18 +1563,17 @@ function prepareForExport(svg) {
 
 class BaseChart {
   constructor(parent, options) {
-
     this.parent =
-        typeof parent === 'string' ? document.querySelector(parent) : parent;
+      typeof parent === "string" ? document.querySelector(parent) : parent;
 
     if (!(this.parent instanceof HTMLElement)) {
-      throw new Error('No `parent` element to render on was provided.');
+      throw new Error("No `parent` element to render on was provided.");
     }
 
     this.rawChartArgs = options;
 
-    this.title = options.title || '';
-    this.type = options.type || '';
+    this.title = options.title || "";
+    this.type = options.type || "";
 
     this.realData = this.prepareData(options.data);
     this.data = this.prepareFirstData(this.realData);
@@ -1446,11 +1581,11 @@ class BaseChart {
     this.colors = this.validateColors(options.colors, this.type);
 
     this.config = {
-      showTooltip : 1, // calculate
-      showLegend : 1,  // calculate
-      isNavigable : options.isNavigable || 0,
-      animate : (typeof options.animate !== 'undefined') ? options.animate : 1,
-      truncateLegends : options.truncateLegends || 0
+      showTooltip: 1, // calculate
+      showLegend: 1, // calculate
+      isNavigable: options.isNavigable || 0,
+      animate: typeof options.animate !== "undefined" ? options.animate : 1,
+      truncateLegends: options.truncateLegends || 0,
     };
 
     this.measures = JSON.parse(JSON.stringify(BASE_MEASURES));
@@ -1459,8 +1594,7 @@ class BaseChart {
     if (!this.title.length) {
       m.titleHeight = 0;
     }
-    if (!this.config.showLegend)
-      m.legendHeight = 0;
+    if (!this.config.showLegend) m.legendHeight = 0;
     this.argHeight = options.height || m.baseHeight;
 
     this.state = {};
@@ -1475,9 +1609,13 @@ class BaseChart {
     this.configure(options);
   }
 
-  prepareData(data) { return data; }
+  prepareData(data) {
+    return data;
+  }
 
-  prepareFirstData(data) { return data; }
+  prepareFirstData(data) {
+    return data;
+  }
 
   validateColors(colors, type) {
     const validColors = [];
@@ -1505,13 +1643,13 @@ class BaseChart {
 
     // Bind window events
     this.boundDrawFn = () => this.draw(true);
-    window.addEventListener('resize', this.boundDrawFn);
-    window.addEventListener('orientationchange', this.boundDrawFn);
+    window.addEventListener("resize", this.boundDrawFn);
+    window.addEventListener("orientationchange", this.boundDrawFn);
   }
 
   destroy() {
-    window.removeEventListener('resize', this.boundDrawFn);
-    window.removeEventListener('orientationchange', this.boundDrawFn);
+    window.removeEventListener("resize", this.boundDrawFn);
+    window.removeEventListener("orientationchange", this.boundDrawFn);
   }
 
   // Has to be called manually
@@ -1525,19 +1663,19 @@ class BaseChart {
 
   makeContainer() {
     // Chart needs a dedicated parent element
-    this.parent.innerHTML = '';
+    this.parent.innerHTML = "";
 
-    let args = {inside : this.parent, className : 'chart-container'};
+    let args = { inside: this.parent, className: "chart-container" };
 
     if (this.independentWidth) {
-      args.styles = {width : this.independentWidth + 'px'};
+      args.styles = { width: this.independentWidth + "px" };
     }
 
-    this.container = $.create('div', args);
+    this.container = $.create("div", args);
   }
 
   makeTooltip() {
-    this.tip = new SvgTip({parent : this.container, colors : this.colors});
+    this.tip = new SvgTip({ parent: this.container, colors: this.colors });
     this.bindTooltip();
   }
 
@@ -1550,13 +1688,15 @@ class BaseChart {
     this.makeChartArea();
     this.setupComponents();
 
-    this.components.forEach(c => c.setup(this.drawArea));
+    this.components.forEach((c) => c.setup(this.drawArea));
     // this.components.forEach(c => c.make());
     this.render(this.components, false);
 
     if (init) {
       this.data = this.realData;
-      setTimeout(() => { this.update(this.data); }, this.initTimeout);
+      setTimeout(() => {
+        this.update(this.data);
+      }, this.initTimeout);
     }
 
     this.renderLegend();
@@ -1577,24 +1717,36 @@ class BaseChart {
     }
     let m = this.measures;
 
-    this.svg = makeSVGContainer(this.container, 'frappe-chart chart',
-                                this.baseWidth, this.baseHeight);
+    this.svg = makeSVGContainer(
+      this.container,
+      "frappe-chart chart",
+      this.baseWidth,
+      this.baseHeight
+    );
     this.svgDefs = makeSVGDefs(this.svg);
 
     if (this.title.length) {
       this.titleEL = makeText(
-          'title', m.margins.left, m.margins.top, this.title,
-          {fontSize : m.titleFontSize, fill : '#666666', dy : m.titleFontSize});
+        "title",
+        m.margins.left,
+        m.margins.top,
+        this.title,
+        { fontSize: m.titleFontSize, fill: "#666666", dy: m.titleFontSize }
+      );
     }
 
     let top = getTopOffset(m);
-    this.drawArea = makeSVGGroup(this.type + '-chart chart-draw-area',
-                                 `translate(${getLeftOffset(m)}, ${top})`);
+    this.drawArea = makeSVGGroup(
+      this.type + "-chart chart-draw-area",
+      `translate(${getLeftOffset(m)}, ${top})`
+    );
 
     if (this.config.showLegend) {
       top += this.height + m.paddings.bottom;
-      this.legendArea = makeSVGGroup('chart-legend',
-                                     `translate(${getLeftOffset(m)}, ${top})`);
+      this.legendArea = makeSVGGroup(
+        "chart-legend",
+        `translate(${getLeftOffset(m)}, ${top})`
+      );
     }
 
     if (this.title.length) {
@@ -1608,13 +1760,17 @@ class BaseChart {
     this.updateTipOffset(getLeftOffset(m), getTopOffset(m));
   }
 
-  updateTipOffset(x, y) { this.tip.offset = {x : x, y : y}; }
+  updateTipOffset(x, y) {
+    this.tip.offset = { x: x, y: y };
+  }
 
-  setupComponents() { this.components = new Map(); }
+  setupComponents() {
+    this.components = new Map();
+  }
 
   update(data) {
     if (!data) {
-      console.error('No data to update.');
+      console.error("No data to update.");
     }
     this.data = this.prepareData(data);
     this.calc(); // builds state
@@ -1624,22 +1780,22 @@ class BaseChart {
   render(components = this.components, animate = true) {
     if (this.config.isNavigable) {
       // Remove all existing overlays
-      this.overlays.map(o => o.parentNode.removeChild(o));
+      this.overlays.map((o) => o.parentNode.removeChild(o));
       // ref.parentNode.insertBefore(element, ref);
     }
     let elementsToAnimate = [];
     // Can decouple to this.refreshComponents() first to save animation timeout
-    components.forEach(c => {
+    components.forEach((c) => {
       elementsToAnimate = elementsToAnimate.concat(c.update(animate));
     });
     if (elementsToAnimate.length > 0) {
       runSMILAnimation(this.container, this.svg, elementsToAnimate);
       setTimeout(() => {
-        components.forEach(c => c.make());
+        components.forEach((c) => c.make());
         this.updateNav();
       }, CHART_POST_ANIMATE_TIMEOUT);
     } else {
-      components.forEach(c => c.make());
+      components.forEach((c) => c.make());
       this.updateNav();
     }
   }
@@ -1654,21 +1810,20 @@ class BaseChart {
   renderLegend() {}
 
   setupNavigation(init = false) {
-    if (!this.config.isNavigable)
-      return;
+    if (!this.config.isNavigable) return;
 
     if (init) {
       this.bindOverlay();
 
       this.keyActions = {
-        '13' : this.onEnterKey.bind(this),
-        '37' : this.onLeftArrow.bind(this),
-        '38' : this.onUpArrow.bind(this),
-        '39' : this.onRightArrow.bind(this),
-        '40' : this.onDownArrow.bind(this),
+        "13": this.onEnterKey.bind(this),
+        "37": this.onLeftArrow.bind(this),
+        "38": this.onUpArrow.bind(this),
+        "39": this.onRightArrow.bind(this),
+        "40": this.onDownArrow.bind(this),
       };
 
-      document.addEventListener('keydown', (e) => {
+      document.addEventListener("keydown", (e) => {
         if (isElementInViewport(this.container)) {
           e = e || window.event;
           if (this.keyActions[e.keyCode]) {
@@ -1700,12 +1855,14 @@ class BaseChart {
 
   export() {
     let chartSvg = prepareForExport(this.svg);
-    downloadFile(this.title || 'Chart', [ chartSvg ]);
+    downloadFile(this.title || "Chart", [chartSvg]);
   }
 }
 
 class AggregationChart extends BaseChart {
-  constructor(parent, args) { super(parent, args); }
+  constructor(parent, args) {
+    super(parent, args);
+  }
 
   configure(args) {
     super.configure(args);
@@ -1719,51 +1876,59 @@ class AggregationChart extends BaseChart {
     let maxSlices = this.config.maxSlices;
     s.sliceTotals = [];
 
-    let allTotals =
-        this.data.labels
-            .map((label, i) => {
-              let total = 0;
-              this.data.datasets.map(e => { total += e.values[i]; });
-              return [ total, label ];
-            })
-            .filter(d => { return d[0] >= 0; }); // keep only positive results
+    let allTotals = this.data.labels
+      .map((label, i) => {
+        let total = 0;
+        this.data.datasets.map((e) => {
+          total += e.values[i];
+        });
+        return [total, label];
+      })
+      .filter((d) => {
+        return d[0] >= 0;
+      }); // keep only positive results
 
     let totals = allTotals;
     if (allTotals.length > maxSlices) {
       // Prune and keep a grey area for rest as per maxSlices
-      allTotals.sort((a, b) => { return b[0] - a[0]; });
+      allTotals.sort((a, b) => {
+        return b[0] - a[0];
+      });
 
       totals = allTotals.slice(0, maxSlices - 1);
       let remaining = allTotals.slice(maxSlices - 1);
 
       let sumOfRemaining = 0;
-      remaining.map(d => { sumOfRemaining += d[0]; });
-      totals.push([ sumOfRemaining, 'Rest' ]);
-      this.colors[maxSlices - 1] = 'grey';
+      remaining.map((d) => {
+        sumOfRemaining += d[0];
+      });
+      totals.push([sumOfRemaining, "Rest"]);
+      this.colors[maxSlices - 1] = "grey";
     }
 
     s.labels = [];
-    totals.map(d => {
+    totals.map((d) => {
       s.sliceTotals.push(d[0]);
       s.labels.push(d[1]);
     });
 
     s.grandTotal = s.sliceTotals.reduce((a, b) => a + b, 0);
 
-    this.center = {x : this.width / 2, y : this.height / 2};
+    this.center = { x: this.width / 2, y: this.height / 2 };
   }
 
   renderLegend() {
     let s = this.state;
-    this.legendArea.textContent = '';
+    this.legendArea.textContent = "";
     this.legendTotals = s.sliceTotals.slice(0, this.config.maxLegendPoints);
 
     let count = 0;
     let y = 0;
     this.legendTotals.map((d, i) => {
       let barWidth = 110;
-      let divisor =
-          Math.floor((this.width - getExtraWidth(this.measures)) / barWidth);
+      let divisor = Math.floor(
+        (this.width - getExtraWidth(this.measures)) / barWidth
+      );
       if (this.legendTotals.length < divisor) {
         barWidth = this.width / this.legendTotals.length;
       }
@@ -1772,8 +1937,14 @@ class AggregationChart extends BaseChart {
         y += 20;
       }
       let x = barWidth * count + 5;
-      let dot = legendDot(x, y, 5, this.colors[i], `${s.labels[i]}: ${d}`,
-                          this.config.truncateLegends);
+      let dot = legendDot(
+        x,
+        y,
+        5,
+        this.colors[i],
+        `${s.labels[i]}: ${d}`,
+        this.config.truncateLegends
+      );
       this.legendArea.appendChild(dot);
       count++;
     });
@@ -1789,11 +1960,21 @@ const NO_OF_MILLIS = 1000;
 const SEC_IN_DAY = 86400;
 
 const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June", "July", "August",
-  "September", "October", "November", "December"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
-const DAY_NAMES_SHORT = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ];
+const DAY_NAMES_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 // https://stackoverflow.com/a/11252167/6495043
 function treatAsUtc(date) {
@@ -1806,11 +1987,15 @@ function getYyyyMmDd(date) {
   let dd = date.getDate();
   let mm = date.getMonth() + 1; // getMonth() is zero-based
   return [
-    date.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd
-  ].join('-');
+    date.getFullYear(),
+    (mm > 9 ? "" : "0") + mm,
+    (dd > 9 ? "" : "0") + dd,
+  ].join("-");
 }
 
-function clone(date) { return new Date(date.getTime()); }
+function clone(date) {
+  return new Date(date.getTime());
+}
 
 // export function getMonthsBetween(startDate, endDate) {}
 
@@ -1825,8 +2010,10 @@ function getDaysBetween(startDate, endDate) {
 }
 
 function areInSameMonth(startDate, endDate) {
-  return startDate.getMonth() === endDate.getMonth() &&
-         startDate.getFullYear() === endDate.getFullYear();
+  return (
+    startDate.getMonth() === endDate.getMonth() &&
+    startDate.getFullYear() === endDate.getFullYear()
+  );
 }
 
 function getMonthName(i, short = false) {
@@ -1843,7 +2030,7 @@ function setDayToSunday(date) {
   let newDate = clone(date);
   const day = newDate.getDay();
   if (day !== 0) {
-    addDays(newDate, (-1) * day);
+    addDays(newDate, -1 * day);
   }
   return newDate;
 }
@@ -1855,13 +2042,13 @@ function addDays(date, numberOfDays) {
 
 class ChartComponent {
   constructor({
-    layerClass = '',
-    layerTransform = '',
+    layerClass = "",
+    layerTransform = "",
     constants,
 
     getData,
     makeElements,
-    animateElements
+    animateElements,
   }) {
     this.layerTransform = layerTransform;
     this.constants = constants;
@@ -1875,14 +2062,17 @@ class ChartComponent {
     this.labels = [];
 
     this.layerClass = layerClass;
-    this.layerClass = typeof (this.layerClass) === 'function'
-                          ? this.layerClass()
-                          : this.layerClass;
+    this.layerClass =
+      typeof this.layerClass === "function"
+        ? this.layerClass()
+        : this.layerClass;
 
     this.refresh();
   }
 
-  refresh(data) { this.data = data || this.getData(); }
+  refresh(data) {
+    this.data = data || this.getData();
+  }
 
   setup(parent) {
     this.layer = makeSVGGroup(this.layerClass, this.layerTransform, parent);
@@ -1896,9 +2086,13 @@ class ChartComponent {
   render(data) {
     this.store = this.makeElements(data);
 
-    this.layer.textContent = '';
-    this.store.forEach(element => { this.layer.appendChild(element); });
-    this.labels.forEach(element => { this.layer.appendChild(element); });
+    this.layer.textContent = "";
+    this.store.forEach((element) => {
+      this.layer.appendChild(element);
+    });
+    this.labels.forEach((element) => {
+      this.layer.appendChild(element);
+    });
   }
 
   update(animate = true) {
@@ -1912,63 +2106,75 @@ class ChartComponent {
 }
 
 let componentConfigs = {
-  donutSlices : {
-    layerClass : 'donut-slices',
+  donutSlices: {
+    layerClass: "donut-slices",
     makeElements(data) {
       return data.sliceStrings.map((s, i) => {
-        let slice =
-            makePath(s, 'donut-path', data.colors[i], 'none', data.strokeWidth);
-        slice.style.transition = 'transform .3s;';
+        let slice = makePath(
+          s,
+          "donut-path",
+          data.colors[i],
+          "none",
+          data.strokeWidth
+        );
+        slice.style.transition = "transform .3s;";
         return slice;
       });
     },
 
     animateElements(newData) {
       return this.store.map((slice, i) =>
-                                animatePathStr(slice, newData.sliceStrings[i]));
+        animatePathStr(slice, newData.sliceStrings[i])
+      );
     },
   },
-  pieSlices : {
-    layerClass : 'pie-slices',
+  pieSlices: {
+    layerClass: "pie-slices",
     makeElements(data) {
       return data.sliceStrings.map((s, i) => {
-        let slice = makePath(s, 'pie-path', 'none', data.colors[i]);
-        slice.style.transition = 'transform .3s;';
+        let slice = makePath(s, "pie-path", "none", data.colors[i]);
+        slice.style.transition = "transform .3s;";
         return slice;
       });
     },
 
     animateElements(newData) {
       return this.store.map((slice, i) =>
-                                animatePathStr(slice, newData.sliceStrings[i]));
-    }
+        animatePathStr(slice, newData.sliceStrings[i])
+      );
+    },
   },
-  percentageBars : {
-    layerClass : 'percentage-bars',
+  percentageBars: {
+    layerClass: "percentage-bars",
     makeElements(data) {
       return data.xPositions.map((x, i) => {
         let y = 0;
-        let bar = percentageBar(x, y, data.widths[i], this.constants.barHeight,
-                                this.constants.barDepth, data.colors[i]);
+        let bar = percentageBar(
+          x,
+          y,
+          data.widths[i],
+          this.constants.barHeight,
+          this.constants.barDepth,
+          data.colors[i]
+        );
         return bar;
       });
     },
 
     animateElements(newData) {
-      if (newData)
-        return [];
-    }
+      if (newData) return [];
+    },
   },
-  yAxis : {
-    layerClass : 'y axis',
+  yAxis: {
+    layerClass: "y axis",
     makeElements(data) {
-      return data.positions.map(
-          (position, i) =>
-              yLine(position, data.labels[i], this.constants.width, {
-                mode : this.constants.mode,
-                pos : this.constants.pos,
-                shortenNumbers : this.constants.shortenNumbers
-              }));
+      return data.positions.map((position, i) =>
+        yLine(position, data.labels[i], this.constants.width, {
+          mode: this.constants.mode,
+          pos: this.constants.pos,
+          shortenNumbers: this.constants.shortenNumbers,
+        })
+      );
     },
 
     animateElements(newData) {
@@ -1980,21 +2186,23 @@ let componentConfigs = {
       [oldPos, newPos] = equilizeNoOfElements(oldPos, newPos);
       [oldLabels, newLabels] = equilizeNoOfElements(oldLabels, newLabels);
 
-      this.render({positions : oldPos, labels : newLabels});
+      this.render({ positions: oldPos, labels: newLabels });
 
-      return this.store.map(
-          (line,
-           i) => { return translateHoriLine(line, newPos[i], oldPos[i]); });
-    }
+      return this.store.map((line, i) => {
+        return translateHoriLine(line, newPos[i], oldPos[i]);
+      });
+    },
   },
 
-  xAxis : {
-    layerClass : 'x axis',
+  xAxis: {
+    layerClass: "x axis",
     makeElements(data) {
-      return data.positions.map(
-          (position, i) =>
-              xLine(position, data.calcLabels[i], this.constants.height,
-                    {mode : this.constants.mode, pos : this.constants.pos}));
+      return data.positions.map((position, i) =>
+        xLine(position, data.calcLabels[i], this.constants.height, {
+          mode: this.constants.mode,
+          pos: this.constants.pos,
+        })
+      );
     },
 
     animateElements(newData) {
@@ -2006,107 +2214,131 @@ let componentConfigs = {
       [oldPos, newPos] = equilizeNoOfElements(oldPos, newPos);
       [oldLabels, newLabels] = equilizeNoOfElements(oldLabels, newLabels);
 
-      this.render({positions : oldPos, calcLabels : newLabels});
+      this.render({ positions: oldPos, calcLabels: newLabels });
 
-      return this.store.map(
-          (line,
-           i) => { return translateVertLine(line, newPos[i], oldPos[i]); });
-    }
+      return this.store.map((line, i) => {
+        return translateVertLine(line, newPos[i], oldPos[i]);
+      });
+    },
   },
 
-  yMarkers : {
-    layerClass : 'y-markers',
+  yMarkers: {
+    layerClass: "y-markers",
     makeElements(data) {
-      return data.map(m => yMarker(m.position, m.label, this.constants.width, {
-                        labelPos : m.options.labelPos,
-                        mode : 'span',
-                        lineType : 'dashed'
-                      }));
+      return data.map((m) =>
+        yMarker(m.position, m.label, this.constants.width, {
+          labelPos: m.options.labelPos,
+          mode: "span",
+          lineType: "dashed",
+        })
+      );
     },
     animateElements(newData) {
       [this.oldData, newData] = equilizeNoOfElements(this.oldData, newData);
 
-      let newPos = newData.map(d => d.position);
-      let newLabels = newData.map(d => d.label);
-      let newOptions = newData.map(d => d.options);
+      let newPos = newData.map((d) => d.position);
+      let newLabels = newData.map((d) => d.label);
+      let newOptions = newData.map((d) => d.options);
 
-      let oldPos = this.oldData.map(d => d.position);
+      let oldPos = this.oldData.map((d) => d.position);
 
-      this.render(oldPos.map((pos, i) => {
-        return {
-          position : oldPos[i],
-          label : newLabels[i],
-          options : newOptions[i]
-        };
-      }));
+      this.render(
+        oldPos.map((pos, i) => {
+          return {
+            position: oldPos[i],
+            label: newLabels[i],
+            options: newOptions[i],
+          };
+        })
+      );
 
-      return this.store.map(
-          (line,
-           i) => { return translateHoriLine(line, newPos[i], oldPos[i]); });
-    }
+      return this.store.map((line, i) => {
+        return translateHoriLine(line, newPos[i], oldPos[i]);
+      });
+    },
   },
 
-  yRegions : {
-    layerClass : 'y-regions',
+  yRegions: {
+    layerClass: "y-regions",
     makeElements(data) {
-      return data.map(r => yRegion(r.startPos, r.endPos, this.constants.width,
-                                   r.label, {labelPos : r.options.labelPos}));
+      return data.map((r) =>
+        yRegion(r.startPos, r.endPos, this.constants.width, r.label, {
+          labelPos: r.options.labelPos,
+        })
+      );
     },
     animateElements(newData) {
       [this.oldData, newData] = equilizeNoOfElements(this.oldData, newData);
 
-      let newPos = newData.map(d => d.endPos);
-      let newLabels = newData.map(d => d.label);
-      let newStarts = newData.map(d => d.startPos);
-      let newOptions = newData.map(d => d.options);
+      let newPos = newData.map((d) => d.endPos);
+      let newLabels = newData.map((d) => d.label);
+      let newStarts = newData.map((d) => d.startPos);
+      let newOptions = newData.map((d) => d.options);
 
-      let oldPos = this.oldData.map(d => d.endPos);
-      let oldStarts = this.oldData.map(d => d.startPos);
+      let oldPos = this.oldData.map((d) => d.endPos);
+      let oldStarts = this.oldData.map((d) => d.startPos);
 
-      this.render(oldPos.map((pos, i) => {
-        return {
-          startPos : oldStarts[i],
-          endPos : oldPos[i],
-          label : newLabels[i],
-          options : newOptions[i]
-        };
-      }));
+      this.render(
+        oldPos.map((pos, i) => {
+          return {
+            startPos: oldStarts[i],
+            endPos: oldPos[i],
+            label: newLabels[i],
+            options: newOptions[i],
+          };
+        })
+      );
 
       let animateElements = [];
 
       this.store.map((rectGroup, i) => {
         animateElements = animateElements.concat(
-            animateRegion(rectGroup, newStarts[i], newPos[i], oldPos[i]));
+          animateRegion(rectGroup, newStarts[i], newPos[i], oldPos[i])
+        );
       });
 
       return animateElements;
-    }
+    },
   },
 
-  heatDomain : {
-    layerClass :
-        function() { return 'heat-domain domain-' + this.constants.index; },
+  heatDomain: {
+    layerClass: function () {
+      return "heat-domain domain-" + this.constants.index;
+    },
     makeElements(data) {
-      let {index, colWidth, rowHeight, squareSize, xTranslate} = this.constants;
+      let {
+        index,
+        colWidth,
+        rowHeight,
+        squareSize,
+        xTranslate,
+      } = this.constants;
       let monthNameHeight = -12;
-      let x = xTranslate, y = 0;
+      let x = xTranslate,
+        y = 0;
 
       this.serializedSubDomains = [];
 
       data.cols.map((week, weekNo) => {
         if (weekNo === 1) {
-          this.labels.push(makeText('domain-name', x, monthNameHeight,
-                                    getMonthName(index, true).toUpperCase(),
-                                    {fontSize : 9}));
+          this.labels.push(
+            makeText(
+              "domain-name",
+              x,
+              monthNameHeight,
+              getMonthName(index, true).toUpperCase(),
+              { fontSize: 9 }
+            )
+          );
         }
         week.map((day, i) => {
           if (day.fill) {
             let data = {
-              'data-date' : day.yyyyMmDd,
-              'data-value' : day.dataValue,
-              'data-day' : i
+              "data-date": day.yyyyMmDd,
+              "data-value": day.dataValue,
+              "data-day": i,
             };
-            let square = heatSquare('day', x, y, squareSize, day.fill, data);
+            let square = heatSquare("day", x, y, squareSize, day.fill, data);
             this.serializedSubDomains.push(square);
           }
           y += rowHeight;
@@ -2119,25 +2351,32 @@ let componentConfigs = {
     },
 
     animateElements(newData) {
-      if (newData)
-        return [];
-    }
+      if (newData) return [];
+    },
   },
 
-  barGraph : {
-    layerClass : function() {
-      return 'dataset-units dataset-bars dataset-' + this.constants.index;
+  barGraph: {
+    layerClass: function () {
+      return "dataset-units dataset-bars dataset-" + this.constants.index;
     },
     makeElements(data) {
       let c = this.constants;
-      this.unitType = 'bar';
+      this.unitType = "bar";
       this.units = data.yPositions.map((y, j) => {
-        return datasetBar(data.xPositions[j], y, data.barWidth, c.color,
-                          data.labels[j], j, data.offsets[j], {
-                            zeroLine : data.zeroLine,
-                            barsWidth : data.barsWidth,
-                            minHeight : c.minHeight
-                          });
+        return datasetBar(
+          data.xPositions[j],
+          y,
+          data.barWidth,
+          c.color,
+          data.labels[j],
+          j,
+          data.offsets[j],
+          {
+            zeroLine: data.zeroLine,
+            barsWidth: data.barsWidth,
+            minHeight: c.minHeight,
+          }
+        );
       });
       return this.units;
     },
@@ -2158,50 +2397,68 @@ let componentConfigs = {
       [oldLabels, newLabels] = equilizeNoOfElements(oldLabels, newLabels);
 
       this.render({
-        xPositions : oldXPos,
-        yPositions : oldYPos,
-        offsets : oldOffsets,
-        labels : newLabels,
+        xPositions: oldXPos,
+        yPositions: oldYPos,
+        offsets: oldOffsets,
+        labels: newLabels,
 
-        zeroLine : this.oldData.zeroLine,
-        barsWidth : this.oldData.barsWidth,
-        barWidth : this.oldData.barWidth,
+        zeroLine: this.oldData.zeroLine,
+        barsWidth: this.oldData.barsWidth,
+        barWidth: this.oldData.barWidth,
       });
 
       let animateElements = [];
 
       this.store.map((bar, i) => {
         animateElements = animateElements.concat(
-            animateBar(bar, newXPos[i], newYPos[i], newData.barWidth,
-                       newOffsets[i], {zeroLine : newData.zeroLine}));
+          animateBar(
+            bar,
+            newXPos[i],
+            newYPos[i],
+            newData.barWidth,
+            newOffsets[i],
+            { zeroLine: newData.zeroLine }
+          )
+        );
       });
 
       return animateElements;
-    }
+    },
   },
 
-  lineGraph : {
-    layerClass : function() {
-      return 'dataset-units dataset-line dataset-' + this.constants.index;
+  lineGraph: {
+    layerClass: function () {
+      return "dataset-units dataset-line dataset-" + this.constants.index;
     },
     makeElements(data) {
       let c = this.constants;
-      this.unitType = 'dot';
+      this.unitType = "dot";
       this.paths = {};
       if (!c.hideLine) {
-        this.paths = getPaths(data.xPositions, data.yPositions, c.color, {
-          heatline : c.heatline,
-          regionFill : c.regionFill,
-          spline : c.spline
-        },
-                              {svgDefs : c.svgDefs, zeroLine : data.zeroLine});
+        this.paths = getPaths(
+          data.xPositions,
+          data.yPositions,
+          c.color,
+          {
+            heatline: c.heatline,
+            regionFill: c.regionFill,
+            spline: c.spline,
+          },
+          { svgDefs: c.svgDefs, zeroLine: data.zeroLine }
+        );
       }
 
       this.units = [];
       if (!c.hideDots) {
         this.units = data.yPositions.map((y, j) => {
-          return datasetDot(data.xPositions[j], y, data.radius, c.color,
-                            (c.valuesOverPoints ? data.values[j] : ''), j);
+          return datasetDot(
+            data.xPositions[j],
+            y,
+            data.radius,
+            c.color,
+            c.valuesOverPoints ? data.values[j] : "",
+            j
+          );
         });
       }
 
@@ -2221,45 +2478,52 @@ let componentConfigs = {
       [oldValues, newValues] = equilizeNoOfElements(oldValues, newValues);
 
       this.render({
-        xPositions : oldXPos,
-        yPositions : oldYPos,
-        values : newValues,
+        xPositions: oldXPos,
+        yPositions: oldYPos,
+        values: newValues,
 
-        zeroLine : this.oldData.zeroLine,
-        radius : this.oldData.radius,
+        zeroLine: this.oldData.zeroLine,
+        radius: this.oldData.radius,
       });
 
       let animateElements = [];
 
       if (Object.keys(this.paths).length) {
         animateElements = animateElements.concat(
-            animatePath(this.paths, newXPos, newYPos, newData.zeroLine,
-                        this.constants.spline));
+          animatePath(
+            this.paths,
+            newXPos,
+            newYPos,
+            newData.zeroLine,
+            this.constants.spline
+          )
+        );
       }
 
       if (this.units.length) {
         this.units.map((dot, i) => {
-          animateElements =
-              animateElements.concat(animateDot(dot, newXPos[i], newYPos[i]));
+          animateElements = animateElements.concat(
+            animateDot(dot, newXPos[i], newYPos[i])
+          );
         });
       }
 
       return animateElements;
-    }
-  }
+    },
+  },
 };
 
 function getComponent(name, constants, getData) {
-  let keys = Object.keys(componentConfigs).filter(k => name.includes(k));
+  let keys = Object.keys(componentConfigs).filter((k) => name.includes(k));
   let config = componentConfigs[keys[0]];
-  Object.assign(config, {constants : constants, getData : getData});
+  Object.assign(config, { constants: constants, getData: getData });
   return new ChartComponent(config);
 }
 
 class PercentageChart extends AggregationChart {
   constructor(parent, args) {
     super(parent, args);
-    this.type = 'percentage';
+    this.type = "percentage";
     this.setup();
   }
 
@@ -2279,24 +2543,29 @@ class PercentageChart extends AggregationChart {
   setupComponents() {
     let s = this.state;
 
-    let componentConfigs = [ [
-      'percentageBars', {
-        barHeight : this.barOptions.height,
-        barDepth : this.barOptions.depth,
-      },
-      function() {
-        return {
-          xPositions : s.xPositions,
-          widths : s.widths,
-          colors : this.colors
-        };
-      }.bind(this)
-    ] ];
+    let componentConfigs = [
+      [
+        "percentageBars",
+        {
+          barHeight: this.barOptions.height,
+          barDepth: this.barOptions.depth,
+        },
+        function () {
+          return {
+            xPositions: s.xPositions,
+            widths: s.widths,
+            colors: this.colors,
+          };
+        }.bind(this),
+      ],
+    ];
 
-    this.components = new Map(componentConfigs.map(args => {
-      let component = getComponent(...args);
-      return [ args[0], component ];
-    }));
+    this.components = new Map(
+      componentConfigs.map((args) => {
+        let component = getComponent(...args);
+        return [args[0], component];
+      })
+    );
   }
 
   calc() {
@@ -2308,7 +2577,7 @@ class PercentageChart extends AggregationChart {
 
     let xPos = 0;
     s.sliceTotals.map((value) => {
-      let width = this.width * value / s.grandTotal;
+      let width = (this.width * value) / s.grandTotal;
       s.widths.push(width);
       s.xPositions.push(xPos);
       xPos += width;
@@ -2319,24 +2588,26 @@ class PercentageChart extends AggregationChart {
 
   bindTooltip() {
     let s = this.state;
-    this.container.addEventListener('mousemove', (e) => {
-      let bars = this.components.get('percentageBars').store;
+    this.container.addEventListener("mousemove", (e) => {
+      let bars = this.components.get("percentageBars").store;
       let bar = e.target;
       if (bars.includes(bar)) {
-
         let i = bars.indexOf(bar);
-        let gOff = getOffset(this.container), pOff = getOffset(bar);
+        let gOff = getOffset(this.container),
+          pOff = getOffset(bar);
 
-        let x = pOff.left - gOff.left + parseInt(bar.getAttribute('width')) / 2;
+        let x = pOff.left - gOff.left + parseInt(bar.getAttribute("width")) / 2;
         let y = pOff.top - gOff.top;
-        let title = (this.formattedLabels && this.formattedLabels.length > 0
-                         ? this.formattedLabels[i]
-                         : this.state.labels[i]) +
-                    ': ';
+        let title =
+          (this.formattedLabels && this.formattedLabels.length > 0
+            ? this.formattedLabels[i]
+            : this.state.labels[i]) + ": ";
         let fraction = s.sliceTotals[i] / s.grandTotal;
 
-        this.tip.setValues(
-            x, y, {name : title, value : (fraction * 100).toFixed(1) + "%"});
+        this.tip.setValues(x, y, {
+          name: title,
+          value: (fraction * 100).toFixed(1) + "%",
+        });
         this.tip.showTip();
       }
     });
@@ -2346,7 +2617,7 @@ class PercentageChart extends AggregationChart {
 class PieChart extends AggregationChart {
   constructor(parent, args) {
     super(parent, args);
-    this.type = 'pie';
+    this.type = "pie";
     this.initTimeout = 0;
     this.init = 1;
 
@@ -2367,9 +2638,9 @@ class PieChart extends AggregationChart {
   calc() {
     super.calc();
     let s = this.state;
-    this.radius = (this.height > this.width ? this.center.x : this.center.y);
+    this.radius = this.height > this.width ? this.center.x : this.center.y;
 
-    const {radius, clockWise} = this;
+    const { radius, clockWise } = this;
 
     const prevSlicesProperties = s.slicesProperties || [];
     s.sliceStrings = [];
@@ -2380,7 +2651,7 @@ class PieChart extends AggregationChart {
       const originDiffAngle = (total / s.grandTotal) * FULL_ANGLE;
       const largeArc = originDiffAngle > 180 ? 1 : 0;
       const diffAngle = clockWise ? -originDiffAngle : originDiffAngle;
-      const endAngle = curAngle = curAngle + diffAngle;
+      const endAngle = (curAngle = curAngle + diffAngle);
       const startPosition = getPositionByAngle(startAngle, radius);
       const endPosition = getPositionByAngle(endAngle, radius);
 
@@ -2394,21 +2665,34 @@ class PieChart extends AggregationChart {
         curStart = startPosition;
         curEnd = endPosition;
       }
-      const curPath = originDiffAngle === 360
-                          ? makeCircleStr(curStart, curEnd, this.center,
-                                          this.radius, clockWise, largeArc)
-                          : makeArcPathStr(curStart, curEnd, this.center,
-                                           this.radius, clockWise, largeArc);
+      const curPath =
+        originDiffAngle === 360
+          ? makeCircleStr(
+              curStart,
+              curEnd,
+              this.center,
+              this.radius,
+              clockWise,
+              largeArc
+            )
+          : makeArcPathStr(
+              curStart,
+              curEnd,
+              this.center,
+              this.radius,
+              clockWise,
+              largeArc
+            );
 
       s.sliceStrings.push(curPath);
       s.slicesProperties.push({
         startPosition,
         endPosition,
-        value : total,
-        total : s.grandTotal,
+        value: total,
+        total: s.grandTotal,
         startAngle,
         endAngle,
-        angle : diffAngle
+        angle: diffAngle,
       });
     });
     this.init = 0;
@@ -2417,30 +2701,37 @@ class PieChart extends AggregationChart {
   setupComponents() {
     let s = this.state;
 
-    let componentConfigs = [ [
-      'pieSlices', {},
-      function() {
-        return {sliceStrings : s.sliceStrings, colors : this.colors};
-      }.bind(this)
-    ] ];
+    let componentConfigs = [
+      [
+        "pieSlices",
+        {},
+        function () {
+          return { sliceStrings: s.sliceStrings, colors: this.colors };
+        }.bind(this),
+      ],
+    ];
 
-    this.components = new Map(componentConfigs.map(args => {
-      let component = getComponent(...args);
-      return [ args[0], component ];
-    }));
+    this.components = new Map(
+      componentConfigs.map((args) => {
+        let component = getComponent(...args);
+        return [args[0], component];
+      })
+    );
   }
 
   calTranslateByAngle(property) {
-    const {radius, hoverRadio} = this;
-    const position =
-        getPositionByAngle(property.startAngle + (property.angle / 2), radius);
-    return `translate3d(${(position.x) * hoverRadio}px,${
-        (position.y) * hoverRadio}px,0)`;
+    const { radius, hoverRadio } = this;
+    const position = getPositionByAngle(
+      property.startAngle + property.angle / 2,
+      radius
+    );
+    return `translate3d(${position.x * hoverRadio}px,${
+      position.y * hoverRadio
+    }px,0)`;
   }
 
   hoverSlice(path, i, flag, e) {
-    if (!path)
-      return;
+    if (!path) return;
     const color = this.colors[i];
     if (flag) {
       transform(path, this.calTranslateByAngle(this.state.slicesProperties[i]));
@@ -2448,29 +2739,31 @@ class PieChart extends AggregationChart {
       let g_off = getOffset(this.svg);
       let x = e.pageX - g_off.left + 10;
       let y = e.pageY - g_off.top - 10;
-      let title = (this.formatted_labels && this.formatted_labels.length > 0
-                       ? this.formatted_labels[i]
-                       : this.state.labels[i]) +
-                  ': ';
-      let percent =
-          (this.state.sliceTotals[i] * 100 / this.state.grandTotal).toFixed(1);
-      this.tip.setValues(x, y, {name : title, value : percent + "%"});
+      let title =
+        (this.formatted_labels && this.formatted_labels.length > 0
+          ? this.formatted_labels[i]
+          : this.state.labels[i]) + ": ";
+      let percent = (
+        (this.state.sliceTotals[i] * 100) /
+        this.state.grandTotal
+      ).toFixed(1);
+      this.tip.setValues(x, y, { name: title, value: percent + "%" });
       this.tip.showTip();
     } else {
-      transform(path, 'translate3d(0,0,0)');
+      transform(path, "translate3d(0,0,0)");
       this.tip.hideTip();
       path.style.fill = color;
     }
   }
 
   bindTooltip() {
-    this.container.addEventListener('mousemove', this.mouseMove);
-    this.container.addEventListener('mouseleave', this.mouseLeave);
+    this.container.addEventListener("mousemove", this.mouseMove);
+    this.container.addEventListener("mouseleave", this.mouseLeave);
   }
 
   mouseMove(e) {
     const target = e.target;
-    let slices = this.components.get('pieSlices').store;
+    let slices = this.components.get("pieSlices").store;
     let prevIndex = this.curActiveSliceIndex;
     let prevAcitve = this.curActiveSlice;
     if (slices.includes(target)) {
@@ -2495,21 +2788,21 @@ function normalize(x) {
   // https://stackoverflow.com/q/9383593/6495043
 
   if (x === 0) {
-    return [ 0, 0 ];
+    return [0, 0];
   }
   if (isNaN(x)) {
-    return {mantissa : -6755399441055744, exponent : 972};
+    return { mantissa: -6755399441055744, exponent: 972 };
   }
   var sig = x > 0 ? 1 : -1;
   if (!isFinite(x)) {
-    return {mantissa : sig * 4503599627370496, exponent : 972};
+    return { mantissa: sig * 4503599627370496, exponent: 972 };
   }
 
   x = Math.abs(x);
   var exp = Math.floor(Math.log10(x));
   var man = x / Math.pow(10, exp);
 
-  return [ sig * man, exp ];
+  return [sig * man, exp];
 }
 
 function getChartRangeIntervals(max, min = 0) {
@@ -2558,7 +2851,7 @@ function getChartIntervals(maxValue, minValue = 0) {
   normalMaxValue = normalMaxValue.toFixed(6);
 
   let intervals = getChartRangeIntervals(normalMaxValue, normalMinValue);
-  intervals = intervals.map(value => value * Math.pow(10, exponent));
+  intervals = intervals.map((value) => value * Math.pow(10, exponent));
   return intervals;
 }
 
@@ -2572,7 +2865,8 @@ function calcChartIntervals(values, withMinimum = false) {
   let minValue = Math.min(...values);
 
   // Exponent to be used for pretty print
-  let exponent = 0, intervals = []; // eslint-disable-line no-unused-vars
+  let exponent = 0,
+    intervals = []; // eslint-disable-line no-unused-vars
 
   function getPositiveFirstIntervals(maxValue, absMinValue) {
     let intervals = getChartIntervals(maxValue);
@@ -2583,7 +2877,7 @@ function calcChartIntervals(values, withMinimum = false) {
     let value = 0;
     for (var i = 1; value < absMinValue; i++) {
       value += intervalSize;
-      intervals.unshift((-1) * value);
+      intervals.unshift(-1 * value);
     }
     return intervals;
   }
@@ -2600,7 +2894,6 @@ function calcChartIntervals(values, withMinimum = false) {
   }
 
   // CASE II: Only minValue negative
-
   else if (maxValue > 0 && minValue < 0) {
     // `withMinimum` irrelevant in this case,
     // We'll be handling both sides of zero separately
@@ -2617,13 +2910,11 @@ function calcChartIntervals(values, withMinimum = false) {
       // Mirror: maxValue => absMinValue, then change sign
       exponent = normalize(absMinValue)[1];
       let posIntervals = getPositiveFirstIntervals(absMinValue, maxValue);
-      intervals = posIntervals.map(d => d * (-1));
+      intervals = posIntervals.map((d) => d * -1);
     }
-
   }
 
   // CASE III: Both non-positive
-
   else if (maxValue <= 0 && minValue <= 0) {
     // Mirrored Case I:
     // Work with positives, then reverse the sign and array
@@ -2638,7 +2929,7 @@ function calcChartIntervals(values, withMinimum = false) {
       intervals = getChartIntervals(pseudoMaxValue, pseudoMinValue);
     }
 
-    intervals = intervals.reverse().map(d => d * (-1));
+    intervals = intervals.reverse().map((d) => d * -1);
   }
 
   return intervals;
@@ -2655,12 +2946,12 @@ function getZeroIndex(yPts) {
     // Minimum value is positive
     // zero-line is off the chart: below
     let min = yPts[0];
-    zeroIndex = (-1) * min / interval;
+    zeroIndex = (-1 * min) / interval;
   } else {
     // Maximum value is negative
     // zero-line is off the chart: above
     let max = yPts[yPts.length - 1];
-    zeroIndex = (-1) * max / interval + (yPts.length - 1);
+    zeroIndex = (-1 * max) / interval + (yPts.length - 1);
   }
   return zeroIndex;
 }
@@ -2678,8 +2969,8 @@ function scale(val, yAxis) {
 }
 
 function getClosestInArray(goal, arr, index = false) {
-  let closest = arr.reduce(function(prev, curr) {
-    return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
+  let closest = arr.reduce(function (prev, curr) {
+    return Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev;
   }, []);
 
   return index ? arr.indexOf(closest) : closest;
@@ -2703,7 +2994,7 @@ function calcDistribution(values, distributionSize) {
 }
 
 function getMaxCheckpoint(value, distribution) {
-  return distribution.filter(d => d < value).length;
+  return distribution.filter((d) => d < value).length;
 }
 
 const COL_WIDTH = HEATMAP_SQUARE_SIZE + HEATMAP_GUTTER_SIZE;
@@ -2713,14 +3004,14 @@ const ROW_HEIGHT = COL_WIDTH;
 class Heatmap extends BaseChart {
   constructor(parent, options) {
     super(parent, options);
-    this.type = 'heatmap';
+    this.type = "heatmap";
 
-    this.countLabel = options.countLabel || '';
+    this.countLabel = options.countLabel || "";
 
-    let validStarts = [ 'Sunday', 'Monday' ];
+    let validStarts = ["Sunday", "Monday"];
     let startSubDomain = validStarts.includes(options.startSubDomain)
-                             ? options.startSubDomain
-                             : 'Sunday';
+      ? options.startSubDomain
+      : "Sunday";
     this.startSubDomainIndex = validStarts.indexOf(startSubDomain);
 
     this.setup();
@@ -2738,20 +3029,20 @@ class Heatmap extends BaseChart {
     let d = this.data;
     let spacing = this.discreteDomains ? NO_OF_YEAR_MONTHS : 0;
     this.independentWidth =
-        (getWeeksBetween(d.start, d.end) + spacing) * COL_WIDTH +
-        getExtraWidth(m);
+      (getWeeksBetween(d.start, d.end) + spacing) * COL_WIDTH +
+      getExtraWidth(m);
   }
 
   updateWidth() {
     let spacing = this.discreteDomains ? NO_OF_YEAR_MONTHS : 0;
     let noOfWeeks = this.state.noOfWeeks ? this.state.noOfWeeks : 52;
     this.baseWidth =
-        (noOfWeeks + spacing) * COL_WIDTH + getExtraWidth(this.measures);
+      (noOfWeeks + spacing) * COL_WIDTH + getExtraWidth(this.measures);
   }
 
   prepareData(data = this.data) {
     if (data.start && data.end && data.start > data.end) {
-      throw new Error('Start date cannot be greater than end date.');
+      throw new Error("Start date cannot be greater than end date.");
     }
 
     if (!data.start) {
@@ -2765,7 +3056,7 @@ class Heatmap extends BaseChart {
 
     if (parseInt(Object.keys(data.dataPoints)[0]) > 100000) {
       let points = {};
-      Object.keys(data.dataPoints).forEach(timestampSec$$1 => {
+      Object.keys(data.dataPoints).forEach((timestampSec$$1) => {
         let date = new Date(timestampSec$$1 * NO_OF_MILLIS);
         points[getYyyyMmDd(date)] = data.dataPoints[timestampSec$$1];
       });
@@ -2783,8 +3074,10 @@ class Heatmap extends BaseChart {
 
     s.firstWeekStart = clone(s.start);
     s.noOfWeeks = getWeeksBetween(s.start, s.end);
-    s.distribution = calcDistribution(Object.values(this.data.dataPoints),
-                                      HEATMAP_DISTRIBUTION_SIZE);
+    s.distribution = calcDistribution(
+      Object.values(this.data.dataPoints),
+      HEATMAP_DISTRIBUTION_SIZE
+    );
 
     s.domainConfigs = this.getDomains();
   }
@@ -2793,32 +3086,39 @@ class Heatmap extends BaseChart {
     let s = this.state;
     let lessCol = this.discreteDomains ? 0 : 1;
 
-    let componentConfigs = s.domainConfigs.map(
-        (config, i) => ['heatDomain', {
-          index : config.index,
-          colWidth : COL_WIDTH,
-          rowHeight : ROW_HEIGHT,
-          squareSize : HEATMAP_SQUARE_SIZE,
-          xTranslate : s.domainConfigs.filter((config, j) => j < i)
-                               .map(config => config.cols.length - lessCol)
-                               .reduce((a, b) => a + b, 0) *
-                           COL_WIDTH
-        },
-                        function() { return s.domainConfigs[i]; }.bind(this)
-
+    let componentConfigs = s.domainConfigs.map((config, i) => [
+      "heatDomain",
+      {
+        index: config.index,
+        colWidth: COL_WIDTH,
+        rowHeight: ROW_HEIGHT,
+        squareSize: HEATMAP_SQUARE_SIZE,
+        xTranslate:
+          s.domainConfigs
+            .filter((config, j) => j < i)
+            .map((config) => config.cols.length - lessCol)
+            .reduce((a, b) => a + b, 0) * COL_WIDTH,
+      },
+      function () {
+        return s.domainConfigs[i];
+      }.bind(this),
     ]);
 
-    this.components = new Map(componentConfigs.map((args, i) => {
-      let component = getComponent(...args);
-      return [ args[0] + '-' + i, component ];
-    }));
+    this.components = new Map(
+      componentConfigs.map((args, i) => {
+        let component = getComponent(...args);
+        return [args[0] + "-" + i, component];
+      })
+    );
 
     let y = 0;
     DAY_NAMES_SHORT.forEach((dayName, i) => {
-      if ([ 1, 3, 5 ].includes(i)) {
-        let dayText = makeText(
-            'subdomain-name', -COL_WIDTH / 2, y, dayName,
-            {fontSize : HEATMAP_SQUARE_SIZE, dy : 8, textAnchor : 'end'});
+      if ([1, 3, 5].includes(i)) {
+        let dayText = makeText("subdomain-name", -COL_WIDTH / 2, y, dayName, {
+          fontSize: HEATMAP_SQUARE_SIZE,
+          dy: 8,
+          textAnchor: "end",
+        });
         this.drawArea.appendChild(dayText);
       }
       y += ROW_HEIGHT;
@@ -2827,7 +3127,7 @@ class Heatmap extends BaseChart {
 
   update(data) {
     if (!data) {
-      console.error('No data to update.');
+      console.error("No data to update.");
     }
 
     this.data = this.prepareData(data);
@@ -2836,28 +3136,31 @@ class Heatmap extends BaseChart {
   }
 
   bindTooltip() {
-    this.container.addEventListener('mousemove', (e) => {
-      this.components.forEach(comp => {
+    this.container.addEventListener("mousemove", (e) => {
+      this.components.forEach((comp) => {
         let daySquares = comp.store;
         let daySquare = e.target;
         if (daySquares.includes(daySquare)) {
-
-          let count = daySquare.getAttribute('data-value');
-          let dateParts = daySquare.getAttribute('data-date').split('-');
+          let count = daySquare.getAttribute("data-value");
+          let dateParts = daySquare.getAttribute("data-date").split("-");
 
           let month = getMonthName(parseInt(dateParts[1]) - 1, true);
 
           let gOff = this.container.getBoundingClientRect(),
-              pOff = daySquare.getBoundingClientRect();
+            pOff = daySquare.getBoundingClientRect();
 
-          let width = parseInt(e.target.getAttribute('width'));
+          let width = parseInt(e.target.getAttribute("width"));
           let x = pOff.left - gOff.left + width / 2;
           let y = pOff.top - gOff.top;
-          let value = count + ' ' + this.countLabel;
-          let name = ' on ' + month + ' ' + dateParts[0] + ', ' + dateParts[2];
+          let value = count + " " + this.countLabel;
+          let name = " on " + month + " " + dateParts[0] + ", " + dateParts[2];
 
-          this.tip.setValues(x, y, {name : name, value : value, valueFirst : 1},
-                             []);
+          this.tip.setValues(
+            x,
+            y,
+            { name: name, value: value, valueFirst: 1 },
+            []
+          );
           this.tip.showTip();
         }
       });
@@ -2865,35 +3168,43 @@ class Heatmap extends BaseChart {
   }
 
   renderLegend() {
-    this.legendArea.textContent = '';
+    this.legendArea.textContent = "";
     let x = 0;
     let y = ROW_HEIGHT;
 
-    let lessText = makeText('subdomain-name', x, y, 'Less',
-                            {fontSize : HEATMAP_SQUARE_SIZE + 1, dy : 9});
-    x = (COL_WIDTH * 2) + COL_WIDTH / 2;
+    let lessText = makeText("subdomain-name", x, y, "Less", {
+      fontSize: HEATMAP_SQUARE_SIZE + 1,
+      dy: 9,
+    });
+    x = COL_WIDTH * 2 + COL_WIDTH / 2;
     this.legendArea.appendChild(lessText);
 
     this.colors.slice(0, HEATMAP_DISTRIBUTION_SIZE).map((color, i) => {
-      const square = heatSquare('heatmap-legend-unit', x + (COL_WIDTH + 3) * i,
-                                y, HEATMAP_SQUARE_SIZE, color);
+      const square = heatSquare(
+        "heatmap-legend-unit",
+        x + (COL_WIDTH + 3) * i,
+        y,
+        HEATMAP_SQUARE_SIZE,
+        color
+      );
       this.legendArea.appendChild(square);
     });
 
     let moreTextX =
-        x + HEATMAP_DISTRIBUTION_SIZE * (COL_WIDTH + 3) + COL_WIDTH / 4;
-    let moreText = makeText('subdomain-name', moreTextX, y, 'More',
-                            {fontSize : HEATMAP_SQUARE_SIZE + 1, dy : 9});
+      x + HEATMAP_DISTRIBUTION_SIZE * (COL_WIDTH + 3) + COL_WIDTH / 4;
+    let moreText = makeText("subdomain-name", moreTextX, y, "More", {
+      fontSize: HEATMAP_SQUARE_SIZE + 1,
+      dy: 9,
+    });
     this.legendArea.appendChild(moreText);
   }
 
   getDomains() {
     let s = this.state;
-    const [startMonth, startYear] =
-        [ s.start.getMonth(), s.start.getFullYear() ];
-    const [endMonth, endYear] = [ s.end.getMonth(), s.end.getFullYear() ];
+    const [startMonth, startYear] = [s.start.getMonth(), s.start.getFullYear()];
+    const [endMonth, endYear] = [s.end.getMonth(), s.end.getFullYear()];
 
-    const noOfMonths = (endMonth - startMonth + 1) + (endYear - startYear) * 12;
+    const noOfMonths = endMonth - startMonth + 1 + (endYear - startYear) * 12;
 
     let domainConfigs = [];
 
@@ -2901,8 +3212,10 @@ class Heatmap extends BaseChart {
     for (var i = 0; i < noOfMonths; i++) {
       let endDate = s.end;
       if (!areInSameMonth(startOfMonth, s.end)) {
-        let [month, year] =
-            [ startOfMonth.getMonth(), startOfMonth.getFullYear() ];
+        let [month, year] = [
+          startOfMonth.getMonth(),
+          startOfMonth.getFullYear(),
+        ];
         endDate = getLastDateInMonth(month, year);
       }
       domainConfigs.push(this.getDomainConfig(startOfMonth, endDate));
@@ -2914,17 +3227,18 @@ class Heatmap extends BaseChart {
     return domainConfigs;
   }
 
-  getDomainConfig(startDate, endDate = '') {
-    let [month, year] = [ startDate.getMonth(), startDate.getFullYear() ];
+  getDomainConfig(startDate, endDate = "") {
+    let [month, year] = [startDate.getMonth(), startDate.getFullYear()];
     let startOfWeek = setDayToSunday(startDate); // TODO: Monday as well
     endDate = clone(endDate) || getLastDateInMonth(month, year);
 
-    let domainConfig = {index : month, cols : []};
+    let domainConfig = { index: month, cols: [] };
 
     addDays(endDate, 1);
     let noOfMonthWeeks = getWeeksBetween(startOfWeek, endDate);
 
-    let cols = [], col;
+    let cols = [],
+      col;
     for (var i = 0; i < noOfMonthWeeks; i++) {
       col = this.getCol(startOfWeek, month);
       cols.push(col);
@@ -2955,7 +3269,7 @@ class Heatmap extends BaseChart {
 
       // Non-generic adjustment for entire heatmap, needs state
       let currentDateWithinData =
-          currentDate >= s.start && currentDate <= s.end;
+        currentDate >= s.start && currentDate <= s.end;
 
       if (empty || currentDate.getMonth() !== month || !currentDateWithinData) {
         config.yyyyMmDd = getYyyyMmDd(currentDate);
@@ -2972,9 +3286,9 @@ class Heatmap extends BaseChart {
     let yyyyMmDd = getYyyyMmDd(date);
     let dataValue = this.data.dataPoints[yyyyMmDd];
     let config = {
-      yyyyMmDd : yyyyMmDd,
-      dataValue : dataValue || 0,
-      fill : this.colors[getMaxCheckpoint(dataValue, this.state.distribution)]
+      yyyyMmDd: yyyyMmDd,
+      dataValue: dataValue || 0,
+      fill: this.colors[getMaxCheckpoint(dataValue, this.state.distribution)],
     };
     return config;
   }
@@ -2990,17 +3304,17 @@ function dataPrep(data, type) {
   let zeroArray = new Array(datasetLength).fill(0);
   if (!datasets) {
     // default
-    datasets = [ {values : zeroArray} ];
+    datasets = [{ values: zeroArray }];
   }
 
-  datasets.map(d => {
+  datasets.map((d) => {
     // Set values
     if (!d.values) {
       d.values = zeroArray;
     } else {
       // Check for non values
       let vals = d.values;
-      vals = vals.map(val => (!isNaN(val) ? val : 0));
+      vals = vals.map((val) => (!isNaN(val) ? val : 0));
 
       // Trim or extend
       if (vals.length > datasetLength) {
@@ -3026,9 +3340,9 @@ function dataPrep(data, type) {
   // Regions
   // data.yRegions = data.yRegions || [];
   if (data.yRegions) {
-    data.yRegions.map(d => {
+    data.yRegions.map((d) => {
       if (d.end < d.start) {
-        [d.start, d.end] = [ d.end, d.start ];
+        [d.start, d.end] = [d.end, d.start];
       }
     });
   }
@@ -3041,22 +3355,22 @@ function zeroDataPrep(realData) {
   let zeroArray = new Array(datasetLength).fill(0);
 
   let zeroData = {
-    labels : realData.labels.slice(0, -1),
-    datasets : realData.datasets.map(d => {
+    labels: realData.labels.slice(0, -1),
+    datasets: realData.datasets.map((d) => {
       return {
-        name : '',
-        values : zeroArray.slice(0, -1),
-        chartType : d.chartType
+        name: "",
+        values: zeroArray.slice(0, -1),
+        chartType: d.chartType,
       };
     }),
   };
 
   if (realData.yMarkers) {
-    zeroData.yMarkers = [ {value : 0, label : ''} ];
+    zeroData.yMarkers = [{ value: 0, label: "" }];
   }
 
   if (realData.yRegions) {
-    zeroData.yRegions = [ {start : 0, end : 0, label : ''} ];
+    zeroData.yRegions = [{ start: 0, end: 0, label: "" }];
   }
 
   return zeroData;
@@ -3064,26 +3378,24 @@ function zeroDataPrep(realData) {
 
 function getShortenedLabels(chartWidth, labels = [], isSeries = true) {
   let allowedSpace = chartWidth / labels.length;
-  if (allowedSpace <= 0)
-    allowedSpace = 1;
+  if (allowedSpace <= 0) allowedSpace = 1;
   let allowedLetters = allowedSpace / DEFAULT_CHAR_WIDTH;
 
   let seriesMultiple;
   if (isSeries) {
     // Find the maximum label length for spacing calculations
-    let maxLabelLength = Math.max(...labels.map(label => label.length));
+    let maxLabelLength = Math.max(...labels.map((label) => label.length));
     seriesMultiple = Math.ceil(maxLabelLength / allowedLetters);
   }
 
   let calcLabels = labels.map((label, i) => {
     label += "";
     if (label.length > allowedLetters) {
-
       if (!isSeries) {
         if (allowedLetters - 3 > 0) {
           label = label.slice(0, allowedLetters - 3) + " ...";
         } else {
-          label = label.slice(0, allowedLetters) + '..';
+          label = label.slice(0, allowedLetters) + "..";
         }
       } else {
         if (i % seriesMultiple !== 0) {
@@ -3104,7 +3416,7 @@ class AxisChart extends BaseChart {
     this.barOptions = args.barOptions || {};
     this.lineOptions = args.lineOptions || {};
 
-    this.type = args.type || 'line';
+    this.type = args.type || "line";
     this.init = 1;
 
     this.setup();
@@ -3123,11 +3435,11 @@ class AxisChart extends BaseChart {
     options.axisOptions = options.axisOptions || {};
     options.tooltipOptions = options.tooltipOptions || {};
 
-    this.config.xAxisMode = options.axisOptions.xAxisMode || 'span';
-    this.config.yAxisMode = options.axisOptions.yAxisMode || 'span';
+    this.config.xAxisMode = options.axisOptions.xAxisMode || "span";
+    this.config.yAxisMode = options.axisOptions.yAxisMode || "span";
     this.config.xIsSeries = options.axisOptions.xIsSeries || 0;
     this.config.shortenYAxisNumbers =
-        options.axisOptions.shortenYAxisNumbers || 0;
+      options.axisOptions.shortenYAxisNumbers || 0;
 
     this.config.formatTooltipX = options.tooltipOptions.formatTooltipX;
     this.config.formatTooltipY = options.tooltipOptions.formatTooltipY;
@@ -3135,14 +3447,18 @@ class AxisChart extends BaseChart {
     this.config.valuesOverPoints = options.valuesOverPoints;
   }
 
-  prepareData(data = this.data) { return dataPrep(data, this.type); }
+  prepareData(data = this.data) {
+    return dataPrep(data, this.type);
+  }
 
-  prepareFirstData(data = this.data) { return zeroDataPrep(data); }
+  prepareFirstData(data = this.data) {
+    return zeroDataPrep(data);
+  }
 
   calc(onlyWidthChange = false) {
     this.calcXPositions();
     if (!onlyWidthChange) {
-      this.calcYAxisParameters(this.getAllYValues(), this.type === 'line');
+      this.calcYAxisParameters(this.getAllYValues(), this.type === "line");
     }
     this.makeDataByIndex();
   }
@@ -3152,7 +3468,7 @@ class AxisChart extends BaseChart {
     let labels = this.data.labels;
     s.datasetLength = labels.length;
 
-    s.unitWidth = this.width / (s.datasetLength);
+    s.unitWidth = this.width / s.datasetLength;
     // Default, as per bar, and mixed. Only line will be a special case
     s.xOffset = s.unitWidth / 2;
 
@@ -3161,22 +3477,22 @@ class AxisChart extends BaseChart {
     // s.xOffset = 0;
 
     s.xAxis = {
-      labels : labels,
-      positions : labels.map((d, i) => floatTwo(s.xOffset + i * s.unitWidth))
+      labels: labels,
+      positions: labels.map((d, i) => floatTwo(s.xOffset + i * s.unitWidth)),
     };
   }
 
-  calcYAxisParameters(dataValues, withMinimum = 'false') {
+  calcYAxisParameters(dataValues, withMinimum = "false") {
     const yPts = calcChartIntervals(dataValues, withMinimum);
     const scaleMultiplier = this.height / getValueRange(yPts);
     const intervalHeight = getIntervalSize(yPts) * scaleMultiplier;
-    const zeroLine = this.height - (getZeroIndex(yPts) * intervalHeight);
+    const zeroLine = this.height - getZeroIndex(yPts) * intervalHeight;
 
     this.state.yAxis = {
-      labels : yPts,
-      positions : yPts.map(d => zeroLine - d * scaleMultiplier),
-      scaleMultiplier : scaleMultiplier,
-      zeroLine : zeroLine,
+      labels: yPts,
+      positions: yPts.map((d) => zeroLine - d * scaleMultiplier),
+      scaleMultiplier: scaleMultiplier,
+      zeroLine: zeroLine,
     };
 
     // Dependent if above changes
@@ -3187,21 +3503,21 @@ class AxisChart extends BaseChart {
 
   calcDatasetPoints() {
     let s = this.state;
-    let scaleAll = values => values.map(val => scale(val, s.yAxis));
+    let scaleAll = (values) => values.map((val) => scale(val, s.yAxis));
 
     s.datasets = this.data.datasets.map((d, i) => {
       let values = d.values;
       let cumulativeYs = d.cumulativeYs || [];
       return {
-        name : d.name,
-        index : i,
-        chartType : d.chartType,
+        name: d.name,
+        index: i,
+        chartType: d.chartType,
 
-        values : values,
-        yPositions : scaleAll(values),
+        values: values,
+        yPositions: scaleAll(values),
 
-        cumulativeYs : cumulativeYs,
-        cumulativeYPos : scaleAll(cumulativeYs),
+        cumulativeYs: cumulativeYs,
+        cumulativeYPos: scaleAll(cumulativeYs),
       };
     });
   }
@@ -3213,7 +3529,7 @@ class AxisChart extends BaseChart {
       return;
     }
     s.yExtremes = new Array(s.datasetLength).fill(9999);
-    s.datasets.map(d => {
+    s.datasets.map((d) => {
       d.yPositions.map((pos, j) => {
         if (pos < s.yExtremes[j]) {
           s.yExtremes[j] = pos;
@@ -3225,10 +3541,9 @@ class AxisChart extends BaseChart {
   calcYRegions() {
     let s = this.state;
     if (this.data.yMarkers) {
-      this.state.yMarkers = this.data.yMarkers.map(d => {
+      this.state.yMarkers = this.data.yMarkers.map((d) => {
         d.position = scale(d.value, s.yAxis);
-        if (!d.options)
-          d.options = {};
+        if (!d.options) d.options = {};
         // if(!d.label.includes(':')) {
         // 	d.label += ': ' + d.value;
         // }
@@ -3236,21 +3551,20 @@ class AxisChart extends BaseChart {
       });
     }
     if (this.data.yRegions) {
-      this.state.yRegions = this.data.yRegions.map(d => {
+      this.state.yRegions = this.data.yRegions.map((d) => {
         d.startPos = scale(d.start, s.yAxis);
         d.endPos = scale(d.end, s.yAxis);
-        if (!d.options)
-          d.options = {};
+        if (!d.options) d.options = {};
         return d;
       });
     }
   }
 
   getAllYValues() {
-    let key = 'values';
+    let key = "values";
 
     if (this.barOptions.stacked) {
-      key = 'cumulativeYs';
+      key = "cumulativeYs";
       let cumulative = new Array(this.state.datasetLength).fill(0);
       this.data.datasets.map((d, i) => {
         let values = this.data.datasets[i].values;
@@ -3258,12 +3572,14 @@ class AxisChart extends BaseChart {
       });
     }
 
-    let allValueLists = this.data.datasets.map(d => d[key]);
+    let allValueLists = this.data.datasets.map((d) => d[key]);
     if (this.data.yMarkers) {
-      allValueLists.push(this.data.yMarkers.map(d => d.value));
+      allValueLists.push(this.data.yMarkers.map((d) => d.value));
     }
     if (this.data.yRegions) {
-      this.data.yRegions.map(d => { allValueLists.push([ d.end, d.start ]); });
+      this.data.yRegions.map((d) => {
+        allValueLists.push([d.end, d.start]);
+      });
     }
 
     return [].concat(...allValueLists);
@@ -3272,54 +3588,65 @@ class AxisChart extends BaseChart {
   setupComponents() {
     let componentConfigs = [
       [
-        'yAxis', {
-          mode : this.config.yAxisMode,
-          width : this.width,
-          shortenNumbers : this.config.shortenYAxisNumbers
+        "yAxis",
+        {
+          mode: this.config.yAxisMode,
+          width: this.width,
+          shortenNumbers: this.config.shortenYAxisNumbers,
           // pos: 'right'
         },
-        function() { return this.state.yAxis; }.bind(this)
+        function () {
+          return this.state.yAxis;
+        }.bind(this),
       ],
 
       [
-        'xAxis', {
-          mode : this.config.xAxisMode,
-          height : this.height,
+        "xAxis",
+        {
+          mode: this.config.xAxisMode,
+          height: this.height,
           // pos: 'right'
         },
-        function() {
+        function () {
           let s = this.state;
-          s.xAxis.calcLabels = getShortenedLabels(this.width, s.xAxis.labels,
-                                                  this.config.xIsSeries);
+          s.xAxis.calcLabels = getShortenedLabels(
+            this.width,
+            s.xAxis.labels,
+            this.config.xIsSeries
+          );
 
           return s.xAxis;
-        }.bind(this)
+        }.bind(this),
       ],
 
       [
-        'yRegions', {width : this.width, pos : 'right'},
-        function() { return this.state.yRegions; }.bind(this)
+        "yRegions",
+        { width: this.width, pos: "right" },
+        function () {
+          return this.state.yRegions;
+        }.bind(this),
       ],
     ];
 
-    let barDatasets = this.state.datasets.filter(d => d.chartType === 'bar');
-    let lineDatasets = this.state.datasets.filter(d => d.chartType === 'line');
+    let barDatasets = this.state.datasets.filter((d) => d.chartType === "bar");
+    let lineDatasets = this.state.datasets.filter(
+      (d) => d.chartType === "line"
+    );
 
-    let barsConfigs = barDatasets.map(d => {
+    let barsConfigs = barDatasets.map((d) => {
       let index = d.index;
       return [
-        'barGraph' +
-            '-' + d.index,
+        "barGraph" + "-" + d.index,
         {
-          index : index,
-          color : this.colors[index],
-          stacked : this.barOptions.stacked,
+          index: index,
+          color: this.colors[index],
+          stacked: this.barOptions.stacked,
 
           // same for all datasets
-          valuesOverPoints : this.config.valuesOverPoints,
-          minHeight : this.height * MIN_BAR_PERCENT_HEIGHT,
+          valuesOverPoints: this.config.valuesOverPoints,
+          minHeight: this.height * MIN_BAR_PERCENT_HEIGHT,
         },
-        function() {
+        function () {
           let s = this.state;
           let d = s.datasets[index];
           let stacked = this.barOptions.stacked;
@@ -3328,12 +3655,12 @@ class AxisChart extends BaseChart {
           let barsWidth = s.unitWidth * (1 - spaceRatio);
           let barWidth = barsWidth / (stacked ? 1 : barDatasets.length);
 
-          let xPositions = s.xAxis.positions.map(x => x - barsWidth / 2);
+          let xPositions = s.xAxis.positions.map((x) => x - barsWidth / 2);
           if (!stacked) {
-            xPositions = xPositions.map(p => p + barWidth * index);
+            xPositions = xPositions.map((p) => p + barWidth * index);
           }
 
-          let labels = new Array(s.datasetLength).fill('');
+          let labels = new Array(s.datasetLength).fill("");
           if (this.config.valuesOverPoints) {
             if (stacked && d.index === s.datasets.length - 1) {
               labels = d.cumulativeYs;
@@ -3348,80 +3675,88 @@ class AxisChart extends BaseChart {
           }
 
           return {
-            xPositions : xPositions,
-            yPositions : d.yPositions,
-            offsets : offsets,
+            xPositions: xPositions,
+            yPositions: d.yPositions,
+            offsets: offsets,
             // values: d.values,
-            labels : labels,
+            labels: labels,
 
-            zeroLine : s.yAxis.zeroLine,
-            barsWidth : barsWidth,
-            barWidth : barWidth,
+            zeroLine: s.yAxis.zeroLine,
+            barsWidth: barsWidth,
+            barWidth: barWidth,
           };
-        }.bind(this)
+        }.bind(this),
       ];
     });
 
-    let lineConfigs = lineDatasets.map(d => {
+    let lineConfigs = lineDatasets.map((d) => {
       let index = d.index;
       return [
-        'lineGraph' +
-            '-' + d.index,
+        "lineGraph" + "-" + d.index,
         {
-          index : index,
-          color : this.colors[index],
-          svgDefs : this.svgDefs,
-          heatline : this.lineOptions.heatline,
-          regionFill : this.lineOptions.regionFill,
-          spline : this.lineOptions.spline,
-          hideDots : this.lineOptions.hideDots,
-          hideLine : this.lineOptions.hideLine,
+          index: index,
+          color: this.colors[index],
+          svgDefs: this.svgDefs,
+          heatline: this.lineOptions.heatline,
+          regionFill: this.lineOptions.regionFill,
+          spline: this.lineOptions.spline,
+          hideDots: this.lineOptions.hideDots,
+          hideLine: this.lineOptions.hideLine,
 
           // same for all datasets
-          valuesOverPoints : this.config.valuesOverPoints,
+          valuesOverPoints: this.config.valuesOverPoints,
         },
-        function() {
+        function () {
           let s = this.state;
           let d = s.datasets[index];
-          let minLine = s.yAxis.positions[0] < s.yAxis.zeroLine
-                            ? s.yAxis.positions[0]
-                            : s.yAxis.zeroLine;
+          let minLine =
+            s.yAxis.positions[0] < s.yAxis.zeroLine
+              ? s.yAxis.positions[0]
+              : s.yAxis.zeroLine;
 
           return {
-            xPositions : s.xAxis.positions,
-            yPositions : d.yPositions,
+            xPositions: s.xAxis.positions,
+            yPositions: d.yPositions,
 
-            values : d.values,
+            values: d.values,
 
-            zeroLine : minLine,
-            radius : this.lineOptions.dotSize || LINE_CHART_DOT_SIZE,
+            zeroLine: minLine,
+            radius: this.lineOptions.dotSize || LINE_CHART_DOT_SIZE,
           };
-        }.bind(this)
+        }.bind(this),
       ];
     });
 
-    let markerConfigs = [ [
-      'yMarkers', {width : this.width, pos : 'right'},
-      function() { return this.state.yMarkers; }.bind(this)
-    ] ];
+    let markerConfigs = [
+      [
+        "yMarkers",
+        { width: this.width, pos: "right" },
+        function () {
+          return this.state.yMarkers;
+        }.bind(this),
+      ],
+    ];
 
-    componentConfigs =
-        componentConfigs.concat(barsConfigs, lineConfigs, markerConfigs);
+    componentConfigs = componentConfigs.concat(
+      barsConfigs,
+      lineConfigs,
+      markerConfigs
+    );
 
-    let optionals = [ 'yMarkers', 'yRegions' ];
+    let optionals = ["yMarkers", "yRegions"];
     this.dataUnitComponents = [];
 
     this.components = new Map(
-        componentConfigs
-            .filter(args => !optionals.includes(args[0]) || this.state[args[0]])
-            .map(args => {
-              let component = getComponent(...args);
-              if (args[0].includes('lineGraph') ||
-                  args[0].includes('barGraph')) {
-                this.dataUnitComponents.push(component);
-              }
-              return [ args[0], component ];
-            }));
+      componentConfigs
+        .filter((args) => !optionals.includes(args[0]) || this.state[args[0]])
+        .map((args) => {
+          let component = getComponent(...args);
+          if (args[0].includes("lineGraph") || args[0].includes("barGraph")) {
+            this.dataUnitComponents.push(component);
+          }
+          return [args[0], component];
+        })
+    );
   }
 
   makeDataByIndex() {
@@ -3436,20 +3771,20 @@ class AxisChart extends BaseChart {
       let values = this.state.datasets.map((set, i) => {
         let value = set.values[index];
         return {
-          title : set.name,
-          value : value,
-          yPos : set.yPositions[index],
-          color : this.colors[i],
-          formatted : formatY ? formatY(value) : value,
+          title: set.name,
+          value: value,
+          yPos: set.yPositions[index],
+          color: this.colors[i],
+          formatted: formatY ? formatY(value) : value,
         };
       });
 
       this.dataByIndex[index] = {
-        label : label,
-        formattedLabel : formatX ? formatX(label) : label,
-        xPos : s.xAxis.positions[index],
-        values : values,
-        yExtreme : s.yExtremes[index],
+        label: label,
+        formattedLabel: formatX ? formatX(label) : label,
+        xPos: s.xAxis.positions[index],
+        values: values,
+        yExtreme: s.yExtremes[index],
       };
     });
   }
@@ -3457,7 +3792,7 @@ class AxisChart extends BaseChart {
   bindTooltip() {
     // NOTE: could be in tooltip itself, as it is a given functionality for its
     // parent
-    this.container.addEventListener('mousemove', (e) => {
+    this.container.addEventListener("mousemove", (e) => {
       let m = this.measures;
       let o = getOffset(this.container);
       let relX = e.pageX - o.left - getLeftOffset(m);
@@ -3473,16 +3808,19 @@ class AxisChart extends BaseChart {
 
   mapTooltipXPosition(relX) {
     let s = this.state;
-    if (!s.yExtremes)
-      return;
+    if (!s.yExtremes) return;
 
     let index = getClosestInArray(relX, s.xAxis.positions, true);
     if (index >= 0) {
       let dbi = this.dataByIndex[index];
 
       this.tip.setValues(
-          dbi.xPos + this.tip.offset.x, dbi.yExtreme + this.tip.offset.y,
-          {name : dbi.formattedLabel, value : ''}, dbi.values, index);
+        dbi.xPos + this.tip.offset.x,
+        dbi.yExtreme + this.tip.offset.y,
+        { name: dbi.formattedLabel, value: "" },
+        dbi.values,
+        index
+      );
 
       this.tip.showTip();
     }
@@ -3491,15 +3829,20 @@ class AxisChart extends BaseChart {
   renderLegend() {
     let s = this.data;
     if (s.datasets.length > 1) {
-      this.legendArea.textContent = '';
+      this.legendArea.textContent = "";
       s.datasets.map((d, i) => {
         let barWidth = AXIS_LEGEND_BAR_SIZE;
         // let rightEndPoint = this.baseWidth - this.measures.margins.left -
         // this.measures.margins.right; let multiplier = s.datasets.length - i;
         let rect = legendBar(
-            // rightEndPoint - multiplier * barWidth,	// To right align
-            barWidth * i, '0', barWidth, this.colors[i], d.name,
-            this.config.truncateLegends);
+          // rightEndPoint - multiplier * barWidth,	// To right align
+          barWidth * i,
+          "0",
+          barWidth,
+          this.colors[i],
+          d.name,
+          this.config.truncateLegends
+        );
         this.legendArea.appendChild(rect);
       });
     }
@@ -3512,17 +3855,17 @@ class AxisChart extends BaseChart {
       return;
     }
     if (this.overlayGuides) {
-      this.overlayGuides.forEach(g => {
+      this.overlayGuides.forEach((g) => {
         let o = g.overlay;
         o.parentNode.removeChild(o);
       });
     }
 
-    this.overlayGuides = this.dataUnitComponents.map(c => {
+    this.overlayGuides = this.dataUnitComponents.map((c) => {
       return {
-        type : c.unitType,
-        overlay : undefined,
-        units : c.units,
+        type: c.unitType,
+        overlay: undefined,
+        units: c.units,
       };
     });
 
@@ -3531,7 +3874,7 @@ class AxisChart extends BaseChart {
     }
 
     // Render overlays
-    this.overlayGuides.map(d => {
+    this.overlayGuides.map((d) => {
       let currentUnit = d.units[this.state.currentIndex];
 
       d.overlay = makeOverlay[d.type](currentUnit);
@@ -3541,7 +3884,7 @@ class AxisChart extends BaseChart {
 
   updateOverlayGuides() {
     if (this.overlayGuides) {
-      this.overlayGuides.forEach(g => {
+      this.overlayGuides.forEach((g) => {
         let o = g.overlay;
         o.parentNode.removeChild(o);
       });
@@ -3549,44 +3892,49 @@ class AxisChart extends BaseChart {
   }
 
   bindOverlay() {
-    this.parent.addEventListener('data-select',
-                                 () => { this.updateOverlay(); });
+    this.parent.addEventListener("data-select", () => {
+      this.updateOverlay();
+    });
   }
 
   bindUnits() {
-    this.dataUnitComponents.map(c => {
-      c.units.map(unit => {
-        unit.addEventListener('click', () => {
-          let index = unit.getAttribute('data-point-index');
+    this.dataUnitComponents.map((c) => {
+      c.units.map((unit) => {
+        unit.addEventListener("click", () => {
+          let index = unit.getAttribute("data-point-index");
           this.setCurrentDataPoint(index);
         });
       });
     });
 
     // Note: Doesn't work as tooltip is absolutely positioned
-    this.tip.container.addEventListener('click', () => {
-      let index = this.tip.container.getAttribute('data-point-index');
+    this.tip.container.addEventListener("click", () => {
+      let index = this.tip.container.getAttribute("data-point-index");
       this.setCurrentDataPoint(index);
     });
   }
 
   updateOverlay() {
-    this.overlayGuides.map(d => {
+    this.overlayGuides.map((d) => {
       let currentUnit = d.units[this.state.currentIndex];
       updateOverlay[d.type](currentUnit, d.overlay);
     });
   }
 
-  onLeftArrow() { this.setCurrentDataPoint(this.state.currentIndex - 1); }
+  onLeftArrow() {
+    this.setCurrentDataPoint(this.state.currentIndex - 1);
+  }
 
-  onRightArrow() { this.setCurrentDataPoint(this.state.currentIndex + 1); }
+  onRightArrow() {
+    this.setCurrentDataPoint(this.state.currentIndex + 1);
+  }
 
   getDataPoint(index = this.state.currentIndex) {
     let s = this.state;
     let data_point = {
-      index : index,
-      label : s.xAxis.labels[index],
-      values : s.datasets.map(d => d.values[index])
+      index: index,
+      label: s.xAxis.labels[index],
+      values: s.datasets.map((d) => d.values[index]),
     };
     return data_point;
   }
@@ -3594,12 +3942,9 @@ class AxisChart extends BaseChart {
   setCurrentDataPoint(index) {
     let s = this.state;
     index = parseInt(index);
-    if (index < 0)
-      index = 0;
-    if (index >= s.xAxis.labels.length)
-      index = s.xAxis.labels.length - 1;
-    if (index === s.currentIndex)
-      return;
+    if (index < 0) index = 0;
+    if (index >= s.xAxis.labels.length) index = s.xAxis.labels.length - 1;
+    if (index === s.currentIndex) return;
     s.currentIndex = index;
     fire(this.parent, "data-select", this.getDataPoint());
   }
@@ -3608,8 +3953,9 @@ class AxisChart extends BaseChart {
   addDataPoint(label, datasetValues, index = this.state.datasetLength) {
     super.addDataPoint(label, datasetValues, index);
     this.data.labels.splice(index, 0, label);
-    this.data.datasets.map(
-        (d, i) => { d.values.splice(index, 0, datasetValues[i]); });
+    this.data.datasets.map((d, i) => {
+      d.values.splice(index, 0, datasetValues[i]);
+    });
     this.update(this.data);
   }
 
@@ -3619,7 +3965,9 @@ class AxisChart extends BaseChart {
     }
     super.removeDataPoint(index);
     this.data.labels.splice(index, 1);
-    this.data.datasets.map(d => { d.values.splice(index, 1); });
+    this.data.datasets.map((d) => {
+      d.values.splice(index, 1);
+    });
     this.update(this.data);
   }
 
@@ -3647,7 +3995,7 @@ class AxisChart extends BaseChart {
 class DonutChart extends AggregationChart {
   constructor(parent, args) {
     super(parent, args);
-    this.type = 'donut';
+    this.type = "donut";
     this.initTimeout = 0;
     this.init = 1;
 
@@ -3669,11 +4017,12 @@ class DonutChart extends AggregationChart {
   calc() {
     super.calc();
     let s = this.state;
-    this.radius = this.height > this.width
-                      ? this.center.x - this.strokeWidth / 2
-                      : this.center.y - this.strokeWidth / 2;
+    this.radius =
+      this.height > this.width
+        ? this.center.x - this.strokeWidth / 2
+        : this.center.y - this.strokeWidth / 2;
 
-    const {radius, clockWise} = this;
+    const { radius, clockWise } = this;
 
     const prevSlicesProperties = s.slicesProperties || [];
     s.sliceStrings = [];
@@ -3685,7 +4034,7 @@ class DonutChart extends AggregationChart {
       const originDiffAngle = (total / s.grandTotal) * FULL_ANGLE;
       const largeArc = originDiffAngle > 180 ? 1 : 0;
       const diffAngle = clockWise ? -originDiffAngle : originDiffAngle;
-      const endAngle = curAngle = curAngle + diffAngle;
+      const endAngle = (curAngle = curAngle + diffAngle);
       const startPosition = getPositionByAngle(startAngle, radius);
       const endPosition = getPositionByAngle(endAngle, radius);
 
@@ -3700,21 +4049,33 @@ class DonutChart extends AggregationChart {
         curEnd = endPosition;
       }
       const curPath =
-          originDiffAngle === 360
-              ? makeStrokeCircleStr(curStart, curEnd, this.center, this.radius,
-                                    this.clockWise, largeArc)
-              : makeArcStrokePathStr(curStart, curEnd, this.center, this.radius,
-                                     this.clockWise, largeArc);
+        originDiffAngle === 360
+          ? makeStrokeCircleStr(
+              curStart,
+              curEnd,
+              this.center,
+              this.radius,
+              this.clockWise,
+              largeArc
+            )
+          : makeArcStrokePathStr(
+              curStart,
+              curEnd,
+              this.center,
+              this.radius,
+              this.clockWise,
+              largeArc
+            );
 
       s.sliceStrings.push(curPath);
       s.slicesProperties.push({
         startPosition,
         endPosition,
-        value : total,
-        total : s.grandTotal,
+        value: total,
+        total: s.grandTotal,
         startAngle,
         endAngle,
-        angle : diffAngle
+        angle: diffAngle,
       });
     });
     this.init = 0;
@@ -3723,34 +4084,41 @@ class DonutChart extends AggregationChart {
   setupComponents() {
     let s = this.state;
 
-    let componentConfigs = [ [
-      'donutSlices', {},
-      function() {
-        return {
-          sliceStrings : s.sliceStrings,
-          colors : this.colors,
-          strokeWidth : this.strokeWidth,
-        };
-      }.bind(this)
-    ] ];
+    let componentConfigs = [
+      [
+        "donutSlices",
+        {},
+        function () {
+          return {
+            sliceStrings: s.sliceStrings,
+            colors: this.colors,
+            strokeWidth: this.strokeWidth,
+          };
+        }.bind(this),
+      ],
+    ];
 
-    this.components = new Map(componentConfigs.map(args => {
-      let component = getComponent(...args);
-      return [ args[0], component ];
-    }));
+    this.components = new Map(
+      componentConfigs.map((args) => {
+        let component = getComponent(...args);
+        return [args[0], component];
+      })
+    );
   }
 
   calTranslateByAngle(property) {
-    const {radius, hoverRadio} = this;
-    const position =
-        getPositionByAngle(property.startAngle + (property.angle / 2), radius);
-    return `translate3d(${(position.x) * hoverRadio}px,${
-        (position.y) * hoverRadio}px,0)`;
+    const { radius, hoverRadio } = this;
+    const position = getPositionByAngle(
+      property.startAngle + property.angle / 2,
+      radius
+    );
+    return `translate3d(${position.x * hoverRadio}px,${
+      position.y * hoverRadio
+    }px,0)`;
   }
 
   hoverSlice(path, i, flag, e) {
-    if (!path)
-      return;
+    if (!path) return;
     const color = this.colors[i];
     if (flag) {
       transform(path, this.calTranslateByAngle(this.state.slicesProperties[i]));
@@ -3758,29 +4126,31 @@ class DonutChart extends AggregationChart {
       let g_off = getOffset(this.svg);
       let x = e.pageX - g_off.left + 10;
       let y = e.pageY - g_off.top - 10;
-      let title = (this.formatted_labels && this.formatted_labels.length > 0
-                       ? this.formatted_labels[i]
-                       : this.state.labels[i]) +
-                  ': ';
-      let percent =
-          (this.state.sliceTotals[i] * 100 / this.state.grandTotal).toFixed(1);
-      this.tip.setValues(x, y, {name : title, value : percent + "%"});
+      let title =
+        (this.formatted_labels && this.formatted_labels.length > 0
+          ? this.formatted_labels[i]
+          : this.state.labels[i]) + ": ";
+      let percent = (
+        (this.state.sliceTotals[i] * 100) /
+        this.state.grandTotal
+      ).toFixed(1);
+      this.tip.setValues(x, y, { name: title, value: percent + "%" });
       this.tip.showTip();
     } else {
-      transform(path, 'translate3d(0,0,0)');
+      transform(path, "translate3d(0,0,0)");
       this.tip.hideTip();
       path.style.stroke = color;
     }
   }
 
   bindTooltip() {
-    this.container.addEventListener('mousemove', this.mouseMove);
-    this.container.addEventListener('mouseleave', this.mouseLeave);
+    this.container.addEventListener("mousemove", this.mouseMove);
+    this.container.addEventListener("mouseleave", this.mouseLeave);
   }
 
   mouseMove(e) {
     const target = e.target;
-    let slices = this.components.get('donutSlices').store;
+    let slices = this.components.get("donutSlices").store;
     let prevIndex = this.curActiveSliceIndex;
     let prevAcitve = this.curActiveSlice;
     if (slices.includes(target)) {
@@ -3801,18 +4171,18 @@ class DonutChart extends AggregationChart {
 
 // import MultiAxisChart from './charts/MultiAxisChart';
 const chartTypes = {
-  bar : AxisChart,
-  line : AxisChart,
+  bar: AxisChart,
+  line: AxisChart,
   // multiaxis: MultiAxisChart,
-  percentage : PercentageChart,
-  heatmap : Heatmap,
-  pie : PieChart,
-  donut : DonutChart,
+  percentage: PercentageChart,
+  heatmap: Heatmap,
+  pie: PieChart,
+  donut: DonutChart,
 };
 
-function getChartByType(chartType = 'line', parent, options) {
-  if (chartType === 'axis-mixed') {
-    options.type = 'line';
+function getChartByType(chartType = "line", parent, options) {
+  if (chartType === "axis-mixed") {
+    options.type = "line";
     return new AxisChart(parent, options);
   }
 
@@ -3830,4 +4200,4 @@ class Chart {
   }
 }
 
-export {Chart, PercentageChart, PieChart, Heatmap, AxisChart};
+export { Chart, PercentageChart, PieChart, Heatmap, AxisChart };

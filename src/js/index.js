@@ -1,9 +1,9 @@
-import * as Charts from './chart';
+import * as Charts from "./chart";
 
 let frappe = {};
 
-frappe.NAME = 'Frappe Charts';
-frappe.VERSION = '1.3.2';
+frappe.NAME = "Frappe Charts";
+frappe.VERSION = "1.3.2";
 
 frappe = Object.assign({}, frappe, Charts);
 
